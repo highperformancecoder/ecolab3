@@ -1,0 +1,262 @@
+\section{The Model}\label{model}
+
+We start with a generalised form of the Lotka-Volterra equation 
+\begin{equation}\label{lotka-volterra}
+\dot{\bn} = \br*\bn + \bn*\bbeta\bn.
+\end{equation}
+Here \bn\ is the population density, the component $n_i$ being the
+number of individuals of species $i$, \br\ is the difference
+between reproduction and death, \bbeta\ is the interaction matrix,
+with $\beta_{ij}$ being the interaction between species $i$ and $j$, *
+referring to elementwise multiplication and {\tt mutate} is the
+mutation operator.
+
+\subsection{Lotka-Volterra Dynamics}
+
+The most obvious thing about equation (\ref{lotka-volterra}) is its
+fixed point 
+\begin{equation}\label{fixed point}
+\hat{\bn} = -\bbeta^{-1}\br,
+\end{equation}
+where $\dot{\bn}=0$. For this point to be biologically meaningful, all
+components of $\hat{\bn}$ must be positive, giving rise to the following
+inequalities:
+\begin{equation}\label{positive species}
+\hat n_i = \left(\bbeta^{-1}\br\right)_i>0, \forall i
+\end{equation}
+The stability of this point is related to the
+negative definiteness of derivative of $\dot{\bn}$ at $\hat{\bn}$. The
+components of the derivative are given by
+\begin{equation}\label{derivative}
+\frac{\partial\dot{n}_i}{\partial n_j} =
+\delta_{ij}\left(r_i+\sum_k\beta_{ik}n_k\right) + \beta_{ij}n_i
+\end{equation}
+Substituting eq (\ref{fixed point}) gives
+\begin{equation}
+\left.\frac{\partial\dot{n}_i}{\partial n_j}\right|_{\hat{\bn}}=
+-\beta_{ij}\left(\bbeta^{-1}\br\right)_i
+\end{equation}
+
+Stability of the fixed point requires that this matrix should be
+negative definite. Since the $\left(\bbeta^{-1}\br\right)_i$ are
+all negative by virtue of (\ref{positive species}), each minor
+determinant of this matrix is equal to a minor determinant of \bbeta\
+multiplied by a positive number, stability of the equilibrium is
+equivalent to \bbeta\ being negative definite.
+
+A weaker condition is to require that the system remain bounded with
+time:
+\begin{equation}\label{boundedness}
+\sum_i\dot{n_i}=\br\cdot\bn + \bn\cdot\bbeta\bn < 0, \;\forall \bn:
+\sum_in_i>N \;\exists N
+\end{equation}
+
+As \bn\ becomes large in any direction, this functional is dominated
+by the quadratic term, so this implies that  $\bn\cdot\bbeta\bn\leq0
+\; \forall\bn: n_i>0$. Negative definiteness of \bbeta\ is sufficient,
+but not necessary for this condition. For example, the predator-prey
+relations (heavily normalised) have the following matrix as \bbeta:
+\begin{math}
+\bbeta=\left(\begin{array}{cc}
+-1 & 2\\
+-2 & 0\\
+\end{array}\right)
+\end{math}
+which has eigenvalues $3/2, -5/2$. If we let $\bn=(x,y), x,y\geq0$, then
+$\bn\cdot\bbeta\bn=-2x^2$, which is clearly non-positive
+for all nonpositive $x$.
+
+Consider adding a new row and column to \bbeta. What is condition is
+the new row and column required to satisfy such that equation
+(\ref{boundedness}) is satisfied. Break up \bbeta\ in the following
+way:
+\begin{displaymath}
+\left(
+  \mbox{
+     \begin{tabular}{c|c}
+       $\begin{array}{ccc}\ddots\\&{\bf A}\\&&\ddots\end{array}$ & 
+       $\begin{array}{c}\vdots\\{\bf B}\\\vdots\end{array}$ \\
+       \hline
+       $\begin{array}{ccc}\cdots&{\bf C}&\cdots\end{array}$ & D
+     \end{tabular}
+   }
+\right)
+\left(
+  \mbox{
+     \begin{tabular}{c}
+     $\begin{array}{c}\vdots\\{\bf n_1}\\\vdots\end{array}$\\
+     \hline
+     $n_2$
+     \end{tabular}
+    }
+\right)
+\end{displaymath}
+
+Condition (\ref{boundedness}) becomes:
+\begin{equation}\label{boundedness2}
+{\bf n_1}\cdot{\bf A}{\bf n_1} + {\bf n_1}\cdot({\bf B}+{\bf C})n_2 +
+Dn_2^2 \leq 0
+\end{equation}
+
+Let 
+\begin{displaymath}
+a=\max_{n=1} \bn\cdot A\bn,\mbox{ and } b=\max_{i}B_i+C_i.
+\end{displaymath}
+ Then a sufficient but
+not necessary condition for condition (\ref{boundedness2}) is
+\begin{displaymath}
+an_1^2+bn_1n_2+Dn_2^2\leq0
+\end{displaymath}
+
+The maximum value with respect to $n_2$ is $an_1^2-(bn_1)^2/4D$, so
+this requires that
+\begin{equation}\label{boundedness3}
+b < 2\sqrt{ad}
+\end{equation}
+
+\subsection{Mutation}
+
+With mutation, equation (\ref{lotka-volterra}) reads
+\begin{equation}
+\dot{\bn} = \br*\bn + \bn*\bbeta\bn + {\tt mutate}(\bmu,\br,\bn).
+\end{equation}
+
+
+The difficulty with adding mutation to this model is how to define the
+mapping between genotype space and phenotype space, or in other words,
+what defines the {\em embryology}. A few studies, including Ray's
+Tierra world, do this with an explicit mapping from the genotype to to
+some particular organism property (e.g. interpreted as machine language
+instructions, or as weight in a neural net). These organisms then
+interact with one another to determine the population dynamics. In
+this model, however, we are doing away with the organismal layer, and
+so an explicit embryology is impossible. The only possibility left is
+to use a statistical model of embryology. The mapping between
+genotype space and the population parameters \br,
+\bbeta{}  is expected to look like a rugged
+landscape, however, if two genotypes are close together (in a Hamming
+sense) then one might expect that the phenotypes are likely to be
+similar, as would the population parameters. This I call {\em random
+embryology with locality}.
+
+  In the simple case of point mutations, the probability $P(x)$ of any
+child lying distance $x$ in genotype space from its parent follows a
+Poisson distribution. Random embryology with locality implies that the
+phenotypic parameters are distributed randomly about the parent
+species, with a standard deviation that depends monotonically on the
+genotypic displacement. The simplest such model is to distribute the
+phenotypic parameters in a Gaussian fashion about the parent's values,
+with standard deviation proportional to the genotypic
+displacement. This constant of proportionality can be conflated with
+the species' intrinsic mutation rate, to give rise another phenotypic
+parameter \bmu.  It is assumed that the probability of a mutation generating
+a previously existing species is negligible, and can be ignored. We
+also need another arbitrary parameter $\rho$, ``species radius'',
+which can be understood as the minimum genotypic distance separating
+species, conflated with the same constant of proportionality as \bmu.
+
+In summary, the mutation algorithm is as follows:
+\begin{enumerate}
+\item The number of mutant species arising from species $i$ within a
+timestep is $\mu_i\alpha_in_i/\rho$. This number is rounded
+stochastically to the nearest integer, e.g. 0.25 is rounded up to 1
+25\% of the time and down to 0 75\% of the time.
+
+\item Roll a random number from a Poisson distribution
+$e^{-x/\mu+\rho}$ to determine the standard deviation $\sigma$ of phenotypic
+variation. 
+
+\item Vary \br\ according to a Gaussian distribution about the
+parents' values, with $\sigma\alpha_0$ as the standard deviation,
+where $\alpha_0$ is the range of values that \br\ is initialised
+to, ie $\alpha_0$=\verb|repro_rate(random,maxval)|$-$\verb|repro_rate(random,minval)|
+
+\item The diagonal part of \bbeta\ must be negative, so vary \bbeta\
+according to a log-normal distribution. This means that if the old
+value is $\beta$, the new value becomes
+$\beta'=-\exp(\log_e(\beta)+\sigma)$. These values cannot become
+arbitrarily small, however, as this would imply that some species make
+arbitrarily small demands on the environment, and will become infinite
+in number. In ecolab, the diagonal interactions terms prevented from
+becoming larger than $-r/(.1*{\tt INT\_MAX})$.
+
+\item The offdiagonal components of \bbeta, are varied in a similar
+fashion to \br. However new connections are added, or old ones
+removed according to $\lfloor 1/r\rfloor$, where $r\in(-2,2)$ is
+chosen from a uniform distribution. The values on the new connections
+are chosen from the same initial distribution that the offdiagonal
+values where originally set with, ie the range
+\verb|interaction(offdiag,random,minval)| to
+\verb|interaction(offdiag,random,maxval)|. Since $a$ in condition
+(\ref{boundedness3}) is computationally expensive, we use a slightly stronger
+criterion that is sufficient, computationally tractable yet still
+allows ``interesting'' non-definite matrix behaviour namely that the sum
+$\beta_{ij}+\beta_{ji}$ should be nonpositive.
+
+
+\item \bmu\ must be positive, so should evolve according to the
+log-normal distribution like the diagonal components of
+\bbeta. Similar to \bbeta, it is a catastrophe to allow \bmu\ to
+become arbitrarily large. In the real world, mutation normally exists
+at some fixed background rate --- species can reduce the level of
+mutation by improving their genetic repair algorithms. In ecolab, this
+ceiling on \bmu\ is given by the \verb|mutation(random,maxval)| variable.
+
+\end{enumerate}
+
+\section{Structure of the Ecolab Simulation System}
+
+Ecolab is built on three main class libraries: the {\tt arrays} class,
+which implements dynamic arrays, the {\tt globals} class, which define
+the global state variables of the model and {\tt tcl++} which provides
+bindings to the TCL scripting language. Each of these class libraries
+will be described in subsequent sections.
+
+Further modules of the system include {\tt analysis} and {\tt
+  Xecolab}, which provides a number of generic instruments for
+observing the Ecolab system, and {\tt aux}, which contains code for
+  implementing  a
+client/server version of Ecolab, with the
+instruments running in the client system, and the model running on the
+server, and code for implementing checkpoint/restart. This minimises the amount of traffic between a compute server
+and a client.
+
+The Ecolab model itself is defined in the model specific file {\tt
+  ecolab.cc}. To define another model, replace this file by another
+  one with similar functions. An example of this is {\tt
+  newman.cc}. See \S\ref{new model} for more details.
+
+The whole computation is constructed from a TCL\cite{Ousterhout94}
+script. Example scripts include {\tt ecolab.tcl}, {\tt pred-prey.tcl},
+{\tt lifetime.tcl} and {\tt console.tcl/engine.tcl} for a sample
+client/server system.
+
+\begin{figure}
+\input{pst-node}
+\pspicture(2,0)(15,7)
+\rput(7,7){\rnode{ecolabtcl}{\psframebox{ecolab.tcl}}}
+\rput(5,5){\rnode{modeltcl}{\psframebox{model.tcl}}}
+\rput(7,5){\rnode{Xecolab}{\psframebox{Xecolab.tcl}}}
+\rput(9,5){\rnode{ecolabcc}{\psframebox{ecolab.cc}}}
+\rput(5,3){\rnode{analysis}{\psframebox{analysis.cc}}}
+\rput(12.5,3){\rnode{globals}{\psframebox{globals.cc}}}
+\rput(10,3){\rnode{initarrays}{\psframebox{init\_arrays.cc}}}
+\rput(5,1){\rnode{tclpp}{\psframebox{tcl++.h}}}
+\rput(7,1){\rnode{arrays}{\psframebox{arrays.h}}}
+\rput(7,0){\rnode{carrays}{\psframebox{c\_arrays.c}}}
+\ncline{ecolabtcl}{modeltcl}
+\ncline{ecolabtcl}{Xecolab}
+\ncline{ecolabtcl}{ecolabcc}
+\ncline{Xecolab}{analysis}
+\ncline{ecolabcc}{tclpp}
+\ncline{ecolabcc}{globals}
+\ncline{ecolabcc}{arrays}
+\ncline{ecolabcc}{initarrays}
+\ncline{analysis}{tclpp}
+\ncline{globals}{arrays}
+\ncline{initarrays}{arrays}
+\ncline{arrays}{carrays}
+\endpspicture
+\caption{Structure of the Ecolab Simulation System}
+\end{figure}
+

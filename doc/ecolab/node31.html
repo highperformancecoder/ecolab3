@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Global Variables</TITLE>
+<META NAME="description" CONTENT="Global Variables">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node32.html">
+<LINK REL="previous" HREF="node30.html">
+<LINK REL="up" HREF="node30.html">
+<LINK REL="next" HREF="node32.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html463"
+ HREF="node32.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html460"
+ HREF="node30.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html454"
+ HREF="node30.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html462"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html464"
+ HREF="node32.html">Creating a Tcl command</A>
+<B> Up:</B> <A NAME="tex2html461"
+ HREF="node30.html">tcl++</A>
+<B> Previous:</B> <A NAME="tex2html455"
+ HREF="node30.html">tcl++</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00091000000000000000">
+Global Variables</A>
+</H2>
+
+<P>
+The following global symbols are defined by <code>tcl++</code>:
+<DL>
+<DT><STRONG>interp</STRONG>
+<DD>The default interpreter used by Tcl/Tk
+<DT><STRONG>mainWin</STRONG>
+<DD>The window used by Tk, of type <code>Tk_Window</code>, useful
+for obtaining X information such as colourmaps
+<DT><STRONG>TclError</STRONG>
+<DD>A longjmp label used for trapping errors -- this will
+be replaced by exception handling once g++ has this ability
+<DT><STRONG>error</STRONG>
+<DD>To flag an error, call <code>error(char *format,...)</code>.
+The format string is passed to sprintf, along with all remaining
+arguments. The error message is attached to Tcl's error log, and then
+control branches to <code>TclError</code>, which returns a <code>TCL_ERROR</code>
+code back to Tcl.
+</DL>
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Constructing an experiment</TITLE>
+<META NAME="description" CONTENT="Constructing an experiment">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html171"
+ HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html168"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html162"
+ HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html170"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html172"
+ HREF="node8.html">Input Parameters</A>
+<B> Up:</B> <A NAME="tex2html169"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html163"
+ HREF="node6.html">Making Ecolab</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000">
+Constructing an experiment</A>
+</H1>
+
+<P>
+An experiment consists of a TCL[<A
+ HREF="node55.html#Ousterhout94">2</A>] script, which binds
+the various elements used (the model system, input parameters,
+instruments) into an experimental run. An example experiment is <TT>  ecolab.tcl</TT>. This is an executable script -- once you have made
+ecolab, you can run this script.
+
+<P>
+The script consists of several parts -- the first being a simulation loop
+which steps the model through the generate and mutate operators, then
+updates the various instruments (<TT>display, plot, connect_plot</TT>
+etc.) A couple of points are worth noting about this: there is a <TT>  running</TT> flag which controls whether the simulation is running or
+not. This is used by the <B>run</B> and <B>stop</B> buttons to control
+the execution of the simulation. 
+
+<P>
+The other parts of the experimental script have been broken into
+separate TCL files -- model.tcl contains the input parameters to the
+model, and Xecolab.tcl has the TCL code relating to the X-windows
+interface.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html173"
+ HREF="node8.html">Input Parameters</A>
+<LI><A NAME="tex2html174"
+ HREF="node9.html">The main button bar</A>
+<LI><A NAME="tex2html175"
+ HREF="node10.html">Instrumentation</A>
+<UL>
+<LI><A NAME="tex2html176"
+ HREF="node11.html">Plot</A>
+<LI><A NAME="tex2html177"
+ HREF="node12.html">Histogram</A>
+<LI><A NAME="tex2html178"
+ HREF="node13.html">Display</A>
+<LI><A NAME="tex2html179"
+ HREF="node14.html">Connect_plot</A>
+</UL>
+<LI><A NAME="tex2html180"
+ HREF="node15.html">Auxilliary Commands</A>
+<UL>
+<LI><A NAME="tex2html181"
+ HREF="node16.html">get_global_vars/data_server</A>
+<LI><A NAME="tex2html182"
+ HREF="node17.html">checkpoint/restart</A>
+</UL>
+<LI><A NAME="tex2html183"
+ HREF="node18.html">Ecolab Model commands</A>
+<UL>
+<LI><A NAME="tex2html184"
+ HREF="node19.html">generate</A>
+<LI><A NAME="tex2html185"
+ HREF="node20.html">condense</A>
+<LI><A NAME="tex2html186"
+ HREF="node21.html">mutate</A>
+<LI><A NAME="tex2html187"
+ HREF="node22.html">migrate</A>
+<LI><A NAME="tex2html188"
+ HREF="node23.html">maxeig</A>
+<LI><A NAME="tex2html189"
+ HREF="node24.html">lifetimes</A>
+<LI><A NAME="tex2html190"
+ HREF="node25.html">get</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

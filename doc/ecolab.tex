@@ -1,0 +1,47 @@
+\documentstyle[pstricks,charpath]{article}
+%\includeonly{tclcmds}
+\title{EcoLab \ Documentation}
+\author{Russell K. Standish}
+\input{pstricks}
+\input{multido}
+\input{epsf}
+\newcommand{\br}{\mbox{${\bf r}$}} %reproductive rate
+\newcommand{\bbeta}{\mbox{\boldmath{$\beta$}}}   %interaction matrix
+\newcommand{\bgamma}{\mbox{\boldmath{$\gamma$}}} %dispersal
+\newcommand{\bmu}{\mbox{\boldmath{$\mu$}}}       %mutation rate
+\newcommand{\bn}{\mbox{\boldmath{$n$}}}          %species density
+\newcommand{\nsp}{\mbox{$n_{\rm sp}$}}           %no. of species           
+
+\font\ecolabfont=pagko at 20pt
+\newcommand{\EcoLab}{%
+\pscharpath*[linewidth=1pt,fillstyle=solid,fillcolor=red]{\ecolabfont
+EcoLab}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+{\sl EcoLab} is a system that implements an abstract ecology
+model.\cite{Standish94} It is written as a set of
+Tcl/Tk\cite{Ousterhout94} commands so that the model parameters can
+easily be changed on the fly by means of editing a script. This
+document describes the class libraries that implement the dynamic
+array structures, and the interface to the Tcl interpreter, as well
+all the Tcl commands and variables that are defined in the {\sl
+EcoLab} system. You should also examine the sample {\sl EcoLab} script
+(\verb|ecolab.tcl|) provided with the pacakge, and the sample problem
+scripts, e.g \verb|pred-prey.tcl| and \verb|lifetime.tcl|.
+\end{abstract}
+
+\tableofcontents
+\include{model}
+\include{using}
+\include{spatial}
+\include{tcl++}
+\include{arrays}
+\include{init_arrays}
+\include{globals}
+\include{generic}
+\bibliographystyle{plain}
+\bibliography{rus}
+\end{document}
+

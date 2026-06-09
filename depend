@@ -1,0 +1,23 @@
+analysis.o: analysis.cc arrays.h c_arrays.h newarrays.h tcl++.h \
+ Realloc.h globals.h analysis.h maxmin.h
+arrays.o: arrays.cc arrays.h c_arrays.h newarrays.h
+aux.o: aux.cc arrays.h c_arrays.h newarrays.h tcl++.h Realloc.h \
+ globals.h
+c_arrays.o: c_arrays.c
+checkpoint.o: checkpoint.cc arrays.h c_arrays.h newarrays.h globals.h \
+ Realloc.h tcl++.h
+clientserver.o: clientserver.cc tcl++.h Realloc.h arrays.h c_arrays.h \
+ newarrays.h globals.h maxmin.h
+ecolab.o: ecolab.cc ecolab.h arrays.h c_arrays.h newarrays.h globals.h \
+ Realloc.h maxmin.h tcl++.h analysis.h BitSet.h
+globals.o: globals.cc tcl++.h Realloc.h arrays.h c_arrays.h \
+ newarrays.h globals.h
+init_arrays.o: init_arrays.cc BitSet.h Realloc.h arrays.h c_arrays.h \
+ newarrays.h tcl++.h globals.h
+newman.o: newman.cc ecolab.h arrays.h c_arrays.h newarrays.h globals.h \
+ Realloc.h maxmin.h tcl++.h analysis.h BitSet.h distrand.h
+shadow.o: shadow.cc ecolab.h arrays.h c_arrays.h newarrays.h globals.h \
+ Realloc.h maxmin.h tcl++.h analysis.h BitSet.h
+strings.o: strings.c
+tclmain.o: tclmain.cc tcl++.h Realloc.h
+testarrays.o: testarrays.cc arrays.h c_arrays.h newarrays.h

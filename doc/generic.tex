@@ -1,0 +1,74 @@
+\section{Analysis}\label{analysis}
+
+\subsection{newwin}\label{TCLnewwin}
+
+Syntax:
+
+{\tt newwin} {\em name}
+
+Creates a new toplevel window for a TCL widget, with Tk identifier
+{\em name}. {\em name} must start with a full stop.
+
+\subsection{Reduction Functions}
+
+Syntax:
+
+{\tt max} {\em tcllist}\\
+{\tt min} {\em tcllist}\\
+{\tt av} {\em tcllist}\\
+
+The maximum, minimum and average of a TCL list.
+
+\subsection{Palette Variable}\label{palette}
+
+This variable is used by both the {\tt display\_stub} and {\tt
+  connect\_stub} routines to define a palette of colours for colouring
+  the species in the instruments. If the TCL variable {\tt palette} is
+  assigned a list of X-windows colours (on many systems, a list of
+  such colours is found in {\tt /usr/lib/X11/rgb.txt}),
+  then the palette class can be used like an array within C++,
+  returning the colour name as a string:
+\begin{verbatim}
+palette[i]
+\end{verbatim}
+returns the \verb|i%n|th colour, where {\tt n} is the number of
+colours in the palette list.
+
+\subsection{display\_stub}
+
+Syntax:
+
+\begin{verbatim}
+void display_stub(iarray& density, iarray& species, iarray& nsp, 
+                  int ncells=1, int cell=0);
+\end{verbatim}
+
+This function implements the {\tt display}(\S\ref{display}) widget.
+The value of each component of density is plotted as a function of
+{\tt tstep}, and coloured by the index {\tt species}. Set {\tt
+  ncells>1} and {\tt cell} in order to display only a single cell, as
+in ecolab. These variables may be ignored if not meaningful. {\tt nsp}
+must be set with the cellular structure used by {\tt density}. see
+\S\ref{spatial}. For a non-cellular model, it contains just the 1
+component, equal the {\tt density.size}.
+
+\subsection{connect\_stub}
+
+Syntax:
+
+\begin{verbatim}
+void connect_stub(iarray& density, sparse_mat& interaction, iarray& nsp, 
+                  int ncells=1)
+\end{verbatim}
+
+This function implements the {\tt connect\_plot}(\S\ref{connect})
+widget. The {\tt row} and {\tt col} connections are plotted, and
+sorted and coloured according to connected subsets. {\tt density} is
+only used to indicate extinctions (where {\tt density[i]==0}, the row
+and column is coloured in wheat. Set {\tt ncells>1} and {\tt cell} in
+order to display only a single cell, as in ecolab. These variables may
+be ignored if not meaningful. {\tt nsp} must be set with the cellular
+structure used by {\tt density} and {\tt interaction}. see
+\S\ref{spatial} For a non-cellular model, it contains just the 1
+component, equal the {\tt density.size}.
+

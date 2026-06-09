@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Globals class</TITLE>
+<META NAME="description" CONTENT="Globals class">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node49.html">
+<LINK REL="previous" HREF="node47.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node49.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html657"
+ HREF="node49.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html654"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html648"
+ HREF="node47.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html656"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html658"
+ HREF="node49.html">Analysis</A>
+<B> Up:</B> <A NAME="tex2html655"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html649"
+ HREF="node47.html">init_arrays module</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000120000000000000000">
+Globals class</A>
+</H1>
+
+<P>
+The <TT>globals</TT> class is used to refer to all state variables as one
+object, for the puposes of things like checkpoint restart. The object
+may be a subrange of cells, for example the cells that are represented
+on a particular processor. Methods exist to extract or replace
+subranges of cells. The index operator allows components of the arrays
+to be extracted symbolically. So if <TT>density</TT><IMG
+ WIDTH="17" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.gif"
+ ALT="$\equiv$"><TT>  global_vars.iarrays[0]</TT>, then <TT>g[density]</TT> returns <TT>g.iarrays[0]</TT>.
+
+<P>
+<PRE>
+//A class for storing the global variables used in the model
+class global
+{
+public:
+  //origin cell and number of cells on this processor 
+  int ocell, ncells, tstep; 
+
+  // dimensions array and number of species in each cell
+  iarray dims, nsp, *coords;  
+
+  // list of iarrays
+  iarray *iarrays;
+
+  //list of arrays
+  array *arrays;
+
+  //list of sparse_mats
+  sparse_mat *sparse_mats;
+
+  //lengths of above lists
+  int niarr, narr, nspars;
+
+  global(); 
+  /* i=no. of iarrays, a=no. of arrays and s=no. of sparse_mats */
+  global(int i, int a, int s);
+  global(global&amp;); 
+  global operator=(global);
+  ~global();
+
+  /* get local equivalents of a global variable */
+  iarray&amp; operator[](iarray&amp; var); 
+  array&amp; operator[](array&amp; var);
+  sparse_mat&amp; operator[](sparse_mat&amp; var);
+  
+
+  /* return just the global variables belonging to cell, or a number
+      of cells cell, cell+1, ... cell+nc-1 */
+  global get_cell_vars(int cell, int nc=1);
+ 
+  //replace cells variables by those contained in vars
+  void put_cell_vars(global vars);
+  //add a cell into this global
+  void append(global vars);
+
+  //pack up the global data into a contiguous package
+  void packup(glue&amp; buffer);
+  //unpack contiguous representation of global data
+  void unpack(glue&amp; buffer);
+};
+</PRE>
+<P>
+The <TT>glue</TT> class is a helper class that represents the global
+variables contiguously. It has four important members; <TT>char
+  *data</TT> and <TT>int size</TT>, which point to the contiguous
+representation, and the number of bytes within that representation;
+and the methods <code>&lt;&lt;</code> and <code>&gt;&gt;</code>, which appends/extracts an
+object into/from the representation. The <TT>packup</TT> and <TT>unpack</TT>
+methods within the globals class convert between the glue
+representation and the globals representation.
+
+<P>
+<PRE>
+//A Class for grouping a whole bunch of binary things together
+class glue
+{
+public:
+  char *data;
+  int size;
+  glue(int sz);
+  ~glue()
+  void operator&lt;&lt;(int);
+  void operator&lt;&lt;(double);
+  void operator&lt;&lt;(iarray);
+  void operator&lt;&lt;(array);
+  void operator&lt;&lt;(sparse_mat);
+  void operator&gt;&gt;(int&amp;);
+  void operator&gt;&gt;(double&amp;);
+  void operator&gt;&gt;(iarray&amp;);
+  void operator&gt;&gt;(array&amp;);
+  void operator&gt;&gt;(sparse_mat&amp;);
+};
+
+\begin{verbatim}
+//Assemble a full set of global variables by combining data on each processor
+void get_all_globals(global&amp;);
+</PRE>
+<P>
+collect the global variables on each processor onto processor 0.
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

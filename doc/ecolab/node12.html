@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Histogram</TITLE>
+<META NAME="description" CONTENT="Histogram">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node10.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html248"
+ HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html245"
+ HREF="node10.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html239"
+ HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html247"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html249"
+ HREF="node13.html">Display</A>
+<B> Up:</B> <A NAME="tex2html246"
+ HREF="node10.html">Instrumentation</A>
+<B> Previous:</B> <A NAME="tex2html240"
+ HREF="node11.html">Plot</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00053200000000000000">
+Histogram</A>
+</H3>
+
+<P>
+Usage:
+
+<P>
+<TT>histogram</TT>  <EM>plotname</EM> [<TT>-title</TT> <EM>title string</EM>] <EM>  list of values</EM>
+
+<P>
+This command adds the values to a histogram plot. A record of all data
+values so far added to the histogram is stored in the file <EM>  plotname</EM><TT>.dat</TT>. This allows automatic recalculation of the
+histogram's bins whenever a data value goes out of bounds. The number
+of bins is also dynamically controlled by the scale widget on the
+side. The histogram is recalculated next time <TT>histogram</TT> is
+called after the number of bins has been altered. This can be a time
+consuming business, so it is recommended that the experiment is
+suspended before changing the number of bins.
+
+<P>
+There is also the option of plotting the histogram with logarithmic scales.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

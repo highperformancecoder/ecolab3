@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tclcmd</TITLE>
+<META NAME="description" CONTENT="tclcmd">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node35.html">
+<LINK REL="previous" HREF="node33.html">
+<LINK REL="up" HREF="node30.html">
+<LINK REL="next" HREF="node35.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html496"
+ HREF="node35.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html493"
+ HREF="node30.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html487"
+ HREF="node33.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html495"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html497"
+ HREF="node35.html">tclreturn</A>
+<B> Up:</B> <A NAME="tex2html494"
+ HREF="node30.html">tcl++</A>
+<B> Previous:</B> <A NAME="tex2html488"
+ HREF="node33.html">tclvar</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00094000000000000000">
+tclcmd</A>
+</H2>
+
+<P>
+a tclcmd allows Tcl commands to be executed by a simple <code>x &lt;&lt;</code>
+<EM>Tcl command</EM> syntax. The commands can be stacked, or
+accumulated. Each time a linefeed is obtained, the command is
+evaluated.
+
+<P>
+For example:
+<PRE>
+tclcmd cmd;
+
+cmd &lt;&lt; "set a 1\n puts stdout $a";
+cmd &lt;&lt; "for {set i 0} {$i &lt; 10} {incr i}"
+cmd &lt;&lt; "{set a [expr $a+$i]; puts stdout $a}\n";
+</PRE>
+<P>
+The behaviour of this command is slightly different from the usual
+stream classes, as a space is automatically inserted between arguments
+of a <code>&lt;&lt;</code>. This means that arguments can be easily given - eg
+<PRE>
+cmd &lt;&lt; "plot" &lt;&lt; 1.2 &lt;&lt; 3.4 &lt;&lt; "\n";
+</PRE>will perform the command <TT>plot 1.2 3.4</TT>. In order to build up a
+symbol from multiple arguments, use the append operator. So
+<PRE>
+cmd &lt;&lt; "plot"|3 &lt;&lt; "\n";
+</PRE> 
+executes the command <TT>plot3</TT>.
+
+<P>
+The full class is given by:
+<PRE>
+class tclcmd
+{
+ public:
+  char *result; /* The result of the previous command is placed here */
+  tclcmd();
+  ~tclcmd();
+  tclcmd&amp; operator&lt;&lt;(char* cmd);
+  tclcmd&amp; operator&lt;&lt;(double x);
+  tclcmd&amp; operator&lt;&lt;(int x); 
+  tclcmd&amp; operator&lt;&lt;(unsigned x);
+  tclcmd&amp; operator&lt;&lt;(tclvar x);
+  tclcmd&amp; operator|(char* cmd);
+  tclcmd&amp; operator|(double x);
+  tclcmd&amp; operator|(int x); 
+  tclcmd&amp; operator|(unsigned x);
+  tclcmd&amp; operator|(tclvar x);
+};
+</PRE>
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

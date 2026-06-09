@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tclvar</TITLE>
+<META NAME="description" CONTENT="tclvar">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="node30.html">
+<LINK REL="next" HREF="node34.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html485"
+ HREF="node34.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html482"
+ HREF="node30.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html476"
+ HREF="node32.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html484"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html486"
+ HREF="node34.html">tclcmd</A>
+<B> Up:</B> <A NAME="tex2html483"
+ HREF="node30.html">tcl++</A>
+<B> Previous:</B> <A NAME="tex2html477"
+ HREF="node32.html">Creating a Tcl command</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00093000000000000000">
+tclvar</A>
+</H2>
+
+<P>
+Tcl variables can be accessed by means of the tclvar class. For
+example, if the programmer declares:
+
+<P>
+<code>tclvar hello="hello"; float floatvar;</code>
+
+<P>
+then the variable hello can be used just like a normal C variable in
+expression such as 
+
+<P>
+<code>floatvar=hello*3.4;</code>.
+
+<P>
+The class allows assignment to and from <code>double</code> and <code>char*</code>
+variables, incrementing and decrementing the variables, compound
+assignment and accessing array Tcl variables by means of the C array
+syntax. The is also a function that tests for the existence of a Tcl
+variable.
+
+<P>
+The complete class definition is given by:
+
+<P>
+<PRE>
+class tclvar
+{ 
+ public:
+
+/* constructors */
+  tclvar();
+  tclvar(char *nm, char* val=NULL);
+  tclvar(tclvar&amp;);
+  ~tclvar();
+
+/* These four statements allow tclvars to be freely mixed with arithmetic 
+ expressions */
+  double operator=(double x);
+  char* operator=(char* x);
+  operator double ();
+  operator char* ();
+
+  double operator++();
+  double operator++(int);
+  double operator--();
+  double operator--(int); 
+  double operator+=(double x);
+  double operator-=(double x);
+  double operator*=(double x);
+  double operator/=(double x);
+
+  tclvar operator=(tclvar x); 
+/* arrays can be indexed either by integers, or by strings */
+  tclvar operator[](int index);
+  tclvar operator[](char* index);
+
+  friend int exists(tclvar x);
+};
+</PRE>
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

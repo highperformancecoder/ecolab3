@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spatial Variation</TITLE>
+<META NAME="description" CONTENT="Spatial Variation">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node30.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html425"
+ HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html422"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html416"
+ HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html424"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html426"
+ HREF="node29.html">Parallel Execution</A>
+<B> Up:</B> <A NAME="tex2html423"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html417"
+ HREF="node27.html">Creating a New Model</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000">&#160;</A><A NAME="spatial">&#160;</A>
+<BR>
+Spatial Variation
+</H1>
+
+<P>
+The ecolab model can run in multicellular mode by assigning to the
+<TT>dims</TT>. The model in equation <A HREF="node2.html#lotka-volterra">1</A> is replicated
+in each cell. The idea behind this is to set up a spatially dependent
+model. In case of two dimensional space, one can specify the x and y
+dimensions by assigning the following values as part of the input
+parameters &#167;<A HREF="node8.html#input_parameters">4.1</A>:
+<PRE>
+set dims(x) 10
+set dims(y) 20
+</PRE>This specifies a 
+<!-- MATH: $10\times20$ -->
+<IMG
+ WIDTH="56" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$10\times20$">
+grid of 200 cells.
+The array indices ``x'' and ``y'' are purely arbitrary, one could use
+``0'' and ``1'' instead.
+
+<P>
+In the multicellular case, the number of species in each cell is set
+to be the value of the TCL variable <TT>nsp</TT>. In order to specify
+different numbers of species in each cell at initialisation, one can
+assign to the <TT>nsp</TT> array, in the following syntax (eg a 2D
+system):
+<PRE>
+set nsp(0,0) 10
+set nsp(0,1) 12
+set nsp(1,0) 15
+set nsp(1,1) 13
+</PRE>
+<P>
+One can also initialise other state variables with spatial dependence
+by appending cell indices, e.g.
+<PRE>
+set density(list,0,0) 100
+set density(list,0,1) 100
+set density(list,1,0) 100
+set density(list,1,1) 100
+</PRE>In this case, one may need to write a short TCL loop to intialise a
+particular pattern. This feature is not yet implemented as of version 3.2
+
+<P>
+Migration is performed using the <TT>migrate</TT><A HREF="node22.html#migrate">4.5.4</A> operator.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html427"
+ HREF="node29.html">Parallel Execution</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html425"
+ HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html422"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html416"
+ HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html424"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html426"
+ HREF="node29.html">Parallel Execution</A>
+<B> Up:</B> <A NAME="tex2html423"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html417"
+ HREF="node27.html">Creating a New Model</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

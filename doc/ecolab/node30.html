@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tcl++</TITLE>
+<META NAME="description" CONTENT="tcl++">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node37.html">
+<LINK REL="previous" HREF="node28.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node31.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html446"
+ HREF="node31.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html443"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html437"
+ HREF="node29.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html445"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html447"
+ HREF="node31.html">Global Variables</A>
+<B> Up:</B> <A NAME="tex2html444"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html438"
+ HREF="node29.html">Parallel Execution</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000">&#160;</A><A NAME="tcl++">&#160;</A>
+<BR>
+tcl++
+</H1>
+
+<P>
+This section describes a light weight class library for creating
+Tcl/Tk applications. [<A
+ HREF="node55.html#Ousterhout94">2</A>] It consists of a header file
+<code>tcl++.h</code>, and a main program <code>tclmain.cc</code>. All you need to
+do to create a Tcl/Tk application is write any application specific
+Tcl commands using the NEWCMD macro, link your code with the
+<code>tclmain</code> code, and then proceed to write the rest of your
+application as a Tcl script. The <code>tclmain</code> code uses argv[1] to
+get the name of a script to execute, so assuming that the executable
+image part of your application is called <code>appl.exe</code>, you would
+start off your application script with
+<PRE>
+#!appl.exe
+...Your Tcl/Tk code goes here...
+</PRE>then you script becomes the application, directly launchable from the
+shell.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html448"
+ HREF="node31.html">Global Variables</A>
+<LI><A NAME="tex2html449"
+ HREF="node32.html">Creating a Tcl command</A>
+<LI><A NAME="tex2html450"
+ HREF="node33.html">tclvar</A>
+<LI><A NAME="tex2html451"
+ HREF="node34.html">tclcmd</A>
+<LI><A NAME="tex2html452"
+ HREF="node35.html">tclreturn</A>
+<LI><A NAME="tex2html453"
+ HREF="node36.html">tclindex</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

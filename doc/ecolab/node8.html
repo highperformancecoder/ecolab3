@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Parameters</TITLE>
+<META NAME="description" CONTENT="Input Parameters">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html200"
+ HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html197"
+ HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html191"
+ HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html199"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html201"
+ HREF="node9.html">The main button bar</A>
+<B> Up:</B> <A NAME="tex2html198"
+ HREF="node7.html">Constructing an experiment</A>
+<B> Previous:</B> <A NAME="tex2html192"
+ HREF="node7.html">Constructing an experiment</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">&#160;</A><A NAME="input_parameters">&#160;</A>
+<BR>
+Input Parameters
+</H2>
+
+<P>
+The model's parameters are set by TCL variables in <TT>model.tcl</TT>.
+The actual data structures of the model are initialised the first time
+the model's generate step is called. An example input set is:
+<PRE>
+set nsp 10
+set dims(0) 2
+set density(list) 100
+set repro_rate(random) true
+set repro_rate(random,seed) 10
+set repro_rate(random,maxval) .01
+set repro_rate(random,minval) -.005
+set interaction(diag,random) true
+set interaction(diag,random,seed) 7
+set interaction(diag,random,minval) -0.0001
+set interaction(diag,random,maxval) -0.00005
+set interaction(offdiag,random) true
+set interaction(offdiag,random,minval) -0.0001
+set interaction(offdiag,random,maxval) 0.0001
+set interaction(offdiag,random,connectivity) 2
+set interaction(offdiag,random,seed) 12
+set mutation(random) true
+set mutation(random,maxval) .5
+</PRE>The initial dimension of the system is 10, set by the variable <TT>  nsp</TT> for number of species. The spatial dimensions are set by
+assigning to the array variable dims -- in this case, the system is
+one dimensional, with 2 cells (see &#167;<A HREF="node28.html#spatial">7</A>). The
+remaining variables refer to the initial values of the array variables
+in Ecolab. 
+<!-- MATH: ${\tt density}\equiv\mbox{\boldmath {$n$ }}$ -->
+<IMG
+ WIDTH="101" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="${\tt density}\equiv\mbox{\boldmath {$n$ }}$">
+is assigned the value 100 to each
+element. One can assign a TCL list to these variables also -- see
+<TT>pred-prey.tcl</TT> for an example. The other variables 
+<!-- MATH: ${\tt
+repro\_rate}\equiv\mbox{${\bf r}$ }$ -->
+<IMG
+ WIDTH="120" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="${\tt
+repro\_rate}\equiv\mbox{${\bf r}$ }$">,
+
+<!-- MATH: ${\tt interaction}\equiv\mbox{\boldmath {$\beta$ }}$ -->
+<IMG
+ WIDTH="134" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="${\tt interaction}\equiv\mbox{\boldmath {$\beta$ }}$">
+and 
+<!-- MATH: ${\tt
+mutation}\equiv\mbox{\boldmath {$\mu$ }}$ -->
+<IMG
+ WIDTH="109" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="${\tt
+mutation}\equiv\mbox{\boldmath {$\mu$ }}$">
+are assigned uniformly random values in this
+case. For a full rundown on the syntax of the input parameters, see
+section <A HREF="node47.html#init_arrays">10</A>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

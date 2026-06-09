@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Global functions</TITLE>
+<META NAME="description" CONTENT="Global functions">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="previous" HREF="node41.html">
+<LINK REL="up" HREF="node37.html">
+<LINK REL="next" HREF="node43.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html589"
+ HREF="node43.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html586"
+ HREF="node37.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html582"
+ HREF="node41.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html588"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html590"
+ HREF="node43.html">Reduction functions</A>
+<B> Up:</B> <A NAME="tex2html587"
+ HREF="node37.html">arrays</A>
+<B> Previous:</B> <A NAME="tex2html583"
+ HREF="node41.html">sparse_mat</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000103000000000000000">
+Global functions</A>
+</H2>
+
+<P>
+In all of the following, if it reasonable for an iarray version to
+exist, then it will.
+
+<P>
+<UL>
+<LI>array <TT>merge</TT>( iarray <EM>mask</EM>, array <EM>a</EM>, array <EM>b</EM> )
+
+<P>
+return an array (or iarray) <EM>r</EM> such that where <EM>mask[i]==1</EM>,
+<EM>r[i]=a[i]</EM>, otherwise <EM>r[i]=b[i]</EM>.
+
+<P>
+<LI>array <TT>pack</TT>( array <EM>x</EM>, iarray <EM>mask</EM>, [int <EM>ntrue</EM>])
+
+<P>
+Construct a new array from elements of  <EM>x</EM> that correspond to
+where the mask is true. <EM>ntrue</EM> is an optional parameter equal to
+the number of true elements of <EM>mask</EM>. If not given, then <TT>pack</TT> will count the true elements of <EM>mask</EM>. Give this parameter
+if you are using the same <EM>mask</EM> in multiple <TT>pack</TT> statements.
+
+<P>
+<LI>iarray <TT>enumerate</TT>(iarray <EM>mask</EM>)
+
+<P>
+Return the running sum of mask.
+
+<P>
+<LI>iarray <TT>pcoord</TT>( int <EM>size</EM>)
+
+<P>
+return [0..size-1]
+
+<P>
+<LI>iarray <TT>gen_index</TT>(iarray <EM>x</EM>) 
+
+<P>
+generate a list of species numbers, with each number appearing in the
+list according to the value passed in its position. For example, if
+<EM>x</EM>={0,0,1,2,0,1} then the output from this program will be
+{3,4,4,6}
+
+<P>
+</UL>
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html591"
+ HREF="node43.html">Reduction functions</A>
+<LI><A NAME="tex2html592"
+ HREF="node44.html">Array functions</A>
+<LI><A NAME="tex2html593"
+ HREF="node45.html">Random number functions</A>
+<LI><A NAME="tex2html594"
+ HREF="node46.html">Stream Functions</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

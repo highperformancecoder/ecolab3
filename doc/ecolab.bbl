@@ -1,0 +1,24 @@
+\begin{thebibliography}{1}
+
+\bibitem{Newman97}
+M.~E.~J. Newman.
+\newblock A model of mass extinction.
+\newblock {\em J. Theor. Biol.}, 1997.
+\newblock submitted. Avail. from 1997 SFI working papers:
+  http://www.santafe.edu/sfi/publications/Working-Papers/97-02-013.ps.
+
+\bibitem{Ousterhout94}
+J.~K. Ousterhout.
+\newblock {\em Tcl and the Tk Toolkit}.
+\newblock Addison-Wesley, 1994.
+
+\bibitem{Standish94}
+Russell~K. Standish.
+\newblock Population models with random embryologies as a paradigm for
+  evolution.
+\newblock In Russel~J. Stonier and Xing~Huo Yu, editors, {\em Complex Systems:
+  Mechanism of Adaption}. IOS Press, Amsterdam, 1994.
+\newblock also {\em Complexity International}, vol. 2,
+  http://www.csu.edu.au/ci.
+
+\end{thebibliography}

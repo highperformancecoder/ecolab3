@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Structure of the Ecolab Simulation System</TITLE>
+<META NAME="description" CONTENT="Structure of the Ecolab Simulation System">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html149"
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html146"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html140"
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html148"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html150"
+ HREF="node6.html">Making Ecolab</A>
+<B> Up:</B> <A NAME="tex2html147"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html141"
+ HREF="node4.html">Mutation</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Structure of the Ecolab Simulation System</A>
+</H1>
+
+<P>
+Ecolab is built on three main class libraries: the <TT>arrays</TT> class,
+which implements dynamic arrays, the <TT>globals</TT> class, which define
+the global state variables of the model and <TT>tcl++</TT> which provides
+bindings to the TCL scripting language. Each of these class libraries
+will be described in subsequent sections.
+
+<P>
+Further modules of the system include <TT>analysis</TT> and <TT>  Xecolab</TT>, which provides a number of generic instruments for
+observing the Ecolab system, and <TT>aux</TT>, which contains code for
+  implementing  a
+client/server version of Ecolab, with the
+instruments running in the client system, and the model running on the
+server, and code for implementing checkpoint/restart. This minimises the amount of traffic between a compute server
+and a client.
+
+<P>
+The Ecolab model itself is defined in the model specific file <TT>  ecolab.cc</TT>. To define another model, replace this file by another
+  one with similar functions. An example of this is <TT>  newman.cc</TT>. See &#167;<A HREF="node27.html#new_model">6</A> for more details.
+
+<P>
+The whole computation is constructed from a TCL[<A
+ HREF="node55.html#Ousterhout94">2</A>]
+script. Example scripts include <TT>ecolab.tcl</TT>, <TT>pred-prey.tcl</TT>,
+<TT>lifetime.tcl</TT> and <TT>console.tcl/engine.tcl</TT> for a sample
+client/server system.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER"><A NAME="256">&#160;</A>
+<TABLE WIDTH="50%">
+<CAPTION><STRONG>Figure 1:</STRONG>
+Structure of the Ecolab Simulation System</CAPTION>
+<TR><TD><IMG
+ WIDTH="421" HEIGHT="339"
+ SRC="img36.gif"
+ ALT="\begin{figure}\input{pst-node}
+\pspicture(2,0)(15,7)
+\rput(7,7){\rnode{ecolabtcl...
+...\ncline{initarrays}{arrays}
+\ncline{arrays}{carrays}
+\endpspicture\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+<BR>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html149"
+ HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html146"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html140"
+ HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html148"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html150"
+ HREF="node6.html">Making Ecolab</A>
+<B> Up:</B> <A NAME="tex2html147"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html141"
+ HREF="node4.html">Mutation</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

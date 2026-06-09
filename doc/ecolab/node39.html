@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Indexing and Gather/Scatter</TITLE>
+<META NAME="description" CONTENT="Indexing and Gather/Scatter">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node40.html">
+<LINK REL="previous" HREF="node38.html">
+<LINK REL="up" HREF="node38.html">
+<LINK REL="next" HREF="node40.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html560"
+ HREF="node40.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html557"
+ HREF="node38.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html551"
+ HREF="node38.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html559"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html561"
+ HREF="node40.html">Rounding</A>
+<B> Up:</B> <A NAME="tex2html558"
+ HREF="node38.html">array and iarray</A>
+<B> Previous:</B> <A NAME="tex2html552"
+ HREF="node38.html">array and iarray</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000101100000000000000">
+Indexing and Gather/Scatter</A>
+</H3>
+
+<P>
+The expression <code>a[10]</code> is meant to be an <EM>lvalue</EM> (i.e. can
+be assigned to) that refers to the tenth element of a. When the values
+of a are internally stored in a contiguous memory location, this is
+easy, with the method returning a reference. However, if the data is
+stored in a distributed fashion, references are not possible, and a
+function will need to be called to extract the value, or alternatively
+alter the value, depending on the context. This achieved by a helper
+class <code>par_addr_double</code>. This can either be type cast to a
+<code>double</code>, in which case the function returning the value of
+<code>a[i]</code> is called, alternatively, it can be assigned to, in which
+case the alteration function is called. If more than one array
+variable refers to the same underlying data, a copy is made of the
+data before an array element is altered.
+
+<P>
+A <EM>gather</EM> operation, or <EM>vector index</EM> operation is expressed
+by <code>a[i]</code> where <TT>i</TT> is an <TT>iarray</TT> variable. The
+expression <code>a[i]=x</code> <EM>scatters</EM> the values of <TT>x</TT> into the
+array <TT>a</TT> according to the vector <TT>i</TT>. Naturally, the length
+of <TT>i</TT> and <TT>x</TT> must agree. A fresh copy of <TT>a</TT> data is
+made if needed.
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html560"
+ HREF="node40.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html557"
+ HREF="node38.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html551"
+ HREF="node38.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html559"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html561"
+ HREF="node40.html">Rounding</A>
+<B> Up:</B> <A NAME="tex2html558"
+ HREF="node38.html">array and iarray</A>
+<B> Previous:</B> <A NAME="tex2html552"
+ HREF="node38.html">array and iarray</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

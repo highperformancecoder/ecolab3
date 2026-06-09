@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parallel Execution</TITLE>
+<META NAME="description" CONTENT="Parallel Execution">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="previous" HREF="node28.html">
+<LINK REL="up" HREF="node28.html">
+<LINK REL="next" HREF="node30.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html435"
+ HREF="node30.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html432"
+ HREF="node28.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html428"
+ HREF="node28.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html434"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html436"
+ HREF="node30.html">tcl++</A>
+<B> Up:</B> <A NAME="tex2html433"
+ HREF="node28.html">Spatial Variation</A>
+<B> Previous:</B> <A NAME="tex2html429"
+ HREF="node28.html">Spatial Variation</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Parallel Execution</A>
+</H2>
+
+<P>
+A multicellular model can be run on an MPI parallel system by
+compiling with the MPI flags turned on. Ecolab distributes the cells
+across the processors in a block fashion. A TCL command can be
+written that executes on all processors by placing the <TT>PARALLEL</TT>
+directive at the start of the command. Otherwise (by default) all code
+executes just on processor 0. An example of a useful utility function is
+<TT>get_all_globals</TT> which assembles a complete representation of
+the whole system on processor 0. This uses the <TT>PARALLEL give_me</TT>
+command to obtain the slave processor state variables. There is a
+corresponding <TT>take_it</TT> command to push state variable out to all
+the slaves. These expect the master process to broadcast the data, so
+these routines should not be called from TCL scripts, otherwise Ecolab
+will hang.
+
+<P>
+Work on using the spatial Ecolab is reported in
+[]. The model showed good scalability, and even
+superlinear speedup in some circumstances.
+
+<P>
+The parallel coding practices employed in Ecolab are experimental, and
+may well change in the next release.
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

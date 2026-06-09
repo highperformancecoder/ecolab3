@@ -1,0 +1,412 @@
+\section{Making Ecolab}
+
+Once you have unpacked the gzipped tar file, you should be able to
+make ecolab by running make. The distribution will compile ``out of
+the box'' on a Linux system --- other systems may require some
+modifications to the Makefile in order to get it to work. In
+particular, the Makefile supplied assume GNU Make is used. It will
+autodetect the operating system (Linux, Solaris and Irix have been
+tested), setting options appropriate for that. You may need to adjust
+this for local environments, and in particular the Makefile also tests
+for machine name, so local variations, such as different include or
+library path can be allowed for. In this way, you can use the same
+Makefile for sufferent systems. Alternatively, you can set the values
+of the variables {\tt FLAGS, LIBS, CC, CPLUSPLUS, LINK} and {ARRAYS},
+and comment out the GNU Make logic.
+
+You will need to have TCL/Tk installed. Currently Ecolab has been
+developed against TCL 8.0 and Tk 8.0. It can probably be made to work
+with later versions with a little effort. You will also need to have
+the BLT (version 2.4) in order to use several of the plotting
+widgets. Ecolab can be compiled without BLT by commenting out the BLT flags
+in the Makefile.
+
+Other options are relatively straight forward. Uncomment the Lapack
+flag if you wish to use the {\tt maxeig} command. Uncomment the MPI
+flags if you wish to run Ecolab in parallel using the MPI message
+passing library.
+
+{\tt CONTIGUOUS} is an optimisation compiler flag that can lead to more
+efficient code when the data implementation of arrays are contiguous
+(true if running on a single processor workstation; not true if the
+arrays are distributed on a distributed memory parallel computer).
+
+\section{Constructing an experiment}
+
+An experiment consists of a TCL\cite{Ousterhout94} script, which binds
+the various elements used (the model system, input parameters,
+instruments) into an experimental run. An example experiment is {\tt
+  ecolab.tcl}. This is an executable script --- once you have made
+ecolab, you can run this script.
+
+The script consists of several parts --- the first being a simulation loop
+which steps the model through the generate and mutate operators, then
+updates the various instruments ({\tt display, plot, connect\_plot}
+etc.) A couple of points are worth noting about this: there is a {\tt
+  running} flag which controls whether the simulation is running or
+not. This is used by the {\bf run} and {\bf stop} buttons to control
+the execution of the simulation. 
+
+The other parts of the experimental script have been broken into
+separate TCL files --- model.tcl contains the input parameters to the
+model, and Xecolab.tcl has the TCL code relating to the X-windows
+interface.
+
+\subsection{Input Parameters}\label{input parameters}
+
+The model's parameters are set by TCL variables in {\tt model.tcl}.
+The actual data structures of the model are initialised the first time
+the model's generate step is called. An example input set is:
+\begin{verbatim}
+set nsp 10
+set dims(0) 2
+set density(list) 100
+set repro_rate(random) true
+set repro_rate(random,seed) 10
+set repro_rate(random,maxval) .01
+set repro_rate(random,minval) -.005
+set interaction(diag,random) true
+set interaction(diag,random,seed) 7
+set interaction(diag,random,minval) -0.0001
+set interaction(diag,random,maxval) -0.00005
+set interaction(offdiag,random) true
+set interaction(offdiag,random,minval) -0.0001
+set interaction(offdiag,random,maxval) 0.0001
+set interaction(offdiag,random,connectivity) 2
+set interaction(offdiag,random,seed) 12
+set mutation(random) true
+set mutation(random,maxval) .5
+\end{verbatim}
+The initial dimension of the system is 10, set by the variable {\tt
+  nsp} for number of species. The spatial dimensions are set by
+assigning to the array variable dims --- in this case, the system is
+one dimensional, with 2 cells (see \S\ref{spatial}). The
+remaining variables refer to the initial values of the array variables
+in Ecolab. ${\tt density}\equiv\bn$ is assigned the value 100 to each
+element. One can assign a TCL list to these variables also --- see
+{\tt pred-prey.tcl} for an example. The other variables ${\tt
+  repro\_rate}\equiv\br$, ${\tt interaction}\equiv\bbeta$ and ${\tt
+  mutation}\equiv\bmu$ are assigned uniformly random values in this
+case. For a full rundown on the syntax of the input parameters, see
+section \ref{init_arrays}.
+
+\subsection{The main button bar}
+
+The main button bar has three predefined buttons, {\bf quit} (which is
+bound to the TCL command {\tt exit\_ecolab} for leaving the
+application), {\bf run}, which calls the {\tt simulate} procedure, and
+{\bf stop} which sets the {\tt running} flag to zero, suspending the
+experiment. Additionally, there are three user defined buttons, which
+can have functions bound to them by adding TCL code after {\tt source
+  Xecolab.tcl} like  the following example:
+\begin{verbatim}
+set more_ecolab 1
+source Xecolab.tcl
+.user1 configure -text condense -command condense
+map_mainwin
+\end{verbatim}
+The \verb+more_ecolab+ variable prevents Xecolab from mapping the
+mainwindow, allowing further configuration information to be
+provided. It is then the user responsibility to map the window using
+\verb+map_mainwin+. 
+
+\subsection{Instrumentation}
+
+Currently four instrumented widgets are included in the Ecolab
+distribution. The first time these widgets are called, they
+instantiate themselves in a separate window. This follows the
+philosophy that initialisation should be a transparent operation. A
+number of these widgets depend on the BLT toolkit, so it is wise to
+include BLT at the compilation stage. Each widget is independent, and
+so multiple instruments can be operating at the same time.
+
+\subsubsection{Plot}
+
+Plot a number of TCL variables
+
+Usage:
+
+{\tt plot} {\em plotname} [{\tt -title} {\em title string}] {\em x y1}
+[{\em y2\ldots}]
+
+Note that the arguments are actual TCL variable names, not values
+(i.e. don't use \${\em variable} syntax). {\em plotname} labels the
+particular widget, so multiple plots can be performed simultaneously.
+
+The plot can be zoomed by selecting a rectangular region using the
+left mouse button. The right mouse button reverts to the original scale.
+
+\subsubsection{Histogram}
+
+Usage:
+
+{\tt histogram}  {\em plotname} [{\tt -title} {\em title string}] {\em
+  list of values}
+
+This command adds the values to a histogram plot. A record of all data
+values so far added to the histogram is stored in the file {\em
+  plotname}{\tt .dat}. This allows automatic recalculation of the
+histogram's bins whenever a data value goes out of bounds. The number
+of bins is also dynamically controlled by the scale widget on the
+side. The histogram is recalculated next time {\tt histogram} is
+called after the number of bins has been altered. This can be a time
+consuming business, so it is recommended that the experiment is
+suspended before changing the number of bins.
+
+There is also the option of plotting the histogram with logarithmic scales.
+
+\subsubsection{Display}\label{display}
+
+Usage:
+
+{\tt display} {\em cell} 
+
+This command displays species density in the {\em cell} as a function
+of time. The colour of the lines used are controlled by the {\tt
+  palette} TCL variable.(\S\ref{palette}) This is a list of X-window
+colours to use.
+
+\subsubsection{Connect\_plot}\label{connect}
+
+This command takes no arguments, and displays the connectivity of the
+interaction matrix for each cell. The ecologies are ordered within
+each cell to show up the independent subecologies, and if the {\tt
+  palette} variable (\S\ref{palette}) has been defined, each of the independent
+subecology is coloured differently.
+
+There are two buttons which allow the user to zoom in and out by a
+scale factor of two.  One can also zoom in by clicking with the right
+mouse button at the location you wish to zoom in on.  The plot can
+also be dragged with the left mouse button to change the view.
+
+\subsection{Auxilliary Commands}
+
+\subsubsection{get\_global\_vars/data\_server}
+
+Syntax:
+
+{\tt get\_global\_vars} {\em server port}
+
+{\tt data\_server} {\em port}
+
+This pair implements a client server connection. {\tt data\_server} is
+executed on the compute server, and services any requests coming in on
+the given port. {\tt get\_global\_vars} attaches to the compute
+server, and downloads the compute servers global state variable into
+the clients global variables. The client can the follow on with the
+usual instruments for analysing the data. The advantage in this
+approach is that  X-window traffic can be avoided, the total amount of
+traffic between client and server can be controlled by how often these
+routines are called. An example setup is located in {\tt console.tcl}
+and {\tt engine.tcl}. An alternative client/server scenario can be
+contructed using Tcl sockets, and the console2.tcl/engine.tcl give an
+example of just transferring the \bn{} of the predator-prey
+example. This has a great deal of flexibility, allowing, for example,
+messages to be propagated from client back to the server to allow user
+interactivity into the model
+
+\subsubsection{checkpoint/restart}
+
+Syntax:
+
+{\tt checkpoint} {\em filename}
+
+{\tt restart} {\em filename}
+
+These commands dump the contents of the global variables into a file,
+and correspondingly reload the global state variables from the file,
+in order to implement checkpoint-restart for a batch, or long running
+environment. 
+
+\subsection{Ecolab Model commands}
+
+\subsubsection{generate}
+
+This implements the basic Lotka-Volterra equations:
+
+\begin{math}
+\dot{\bn} = \br*\bn + \bn*\bbeta\bn
+\end{math}
+
+with \br\ being the reproduction rate and \bbeta\ being the
+interspecies interaction. This is implemented as a single line:
+
+\begin{verbatim}
+  density += repro_rate * density + (interaction * density) * density;
+\end{verbatim}
+
+This command also increments the timestep counter {\tt tstep}.
+
+\subsubsection{condense}\label{condense}
+
+This command compacts the systems of equations by removing extinct
+species where $n_i=0$.
+
+\subsubsection{mutate}\label{mutate}
+
+This applies the point mutations to the system. In this case, the
+number of mutants each species produces is calculated from
+(\verb|sp_sep|)\br\bmu\bn. For each of these new species, mutate
+calculates a ``genetic drift'' probabilistically according a Poisson
+distribution with mean given by \bmu. It then arranges for the values
+of \br, \bbeta\ and \bmu\ to be mutated according to a Gaussian
+distribution, with standard error given by the ``genetic drift''. The
+skeleton of the code follows:
+
+\begin{verbatim}
+  /* calculate the number of mutants each species produces */
+  new_sp = (double) sp_sep * repro_rate * mutation * density;
+
+  /* generate index list of old species that mutate to the new */
+  new_sp = gen_index(new_sp); 
+
+  /* collect the old phenotypes */
+  new_repro_rate = repro_rate[new_sp];
+  new_mutation = mutation[new_sp];
+... and the same for interaction, but messy ...
+
+  /* calculate the genetic distances for the mutants from the parents */
+  array gdist(new_sp.size);
+  gdist.fillprand();
+  gdist *= new_mutation;
+
+  /* 
+    change phenotypes randomly, according a normal distribution 
+    with std dev gdist 
+  */
+  gspread( new_repro_rate, gdist );
+  gspread( new_interaction, gdist );
+  gspread( new_mutation, gdist );
+
+  /* concatonate new species */
+  density <<= new_sp;
+  repro_rate <<= new_repro_rate;
+  interaction <<= new_interaction;
+  mutation <<= new_mutation;
+
+  nsp += new_sp.size;
+\end{verbatim}
+
+The offdiagonal components are varied in a similar way, except that there
+is also a finite probability that new connections are added or removed in
+the mutant species.
+
+\subsubsection{migrate}\label{migrate}
+
+This operator implements migration within cellular Ecolab. This
+updates density values according to the difference with the 4 nearest
+neighbours: $\bn+=0.25*(\bn_n+\bn_e+\bn_s+\bn_w)-\bn$, where the
+$n,e,s,w$ index the north, east, south and west neigbouring cells.
+
+\subsubsection{maxeig}\label{maxeig}
+
+\verb|maxeig| returns the maximum eigenvalue of \bbeta. If this number
+is negative, the equilibrium point is stable, if positive, it is
+unstable. As reported in Standish (1994)\cite{Standish94}, the mutation
+drives the maximum eigenvalue slightly positive, then instabilities
+act to push the eigenvalue back to zero. This routine is not multicellular.
+
+\subsubsection{lifetimes}\label{lifetimes}
+
+\verb|lifetimes| records the timestep when a
+species passes a threshold (hardwired at 10) in the {\tt create}
+iarray. If a species has yet to pass the threshold, or has gone
+extinct, the value in {\tt create} is zero. Upon return, this routine
+returns the lifetime of the species that have gone extinct. This can
+then be passed to a histogram routine, or written to a file.
+
+\subsubsection{get}\label{TCLget}
+
+Syntax:
+
+{\tt get} {\em variable}
+
+where {\em variable} is the name of an ecolab state variable from the
+list: nsp, tstep, density, tags, species, repro\_rate, mutation,
+interaction(diag), interaction(val), interaction(row),
+interaction(col). This command returns the value of the state variable
+a TCL list, which can be further processed by TCL programs.
+
+
+\section{Creating New Instruments}
+
+The best way to proceed is to copy an existing instrument, and modify it
+to your needs. The interface to the TCL language can be done almost
+entirely through the {\tt tcl++} class library (\S\ref{tcl++}). Use the
+{\tt NEWCMD} macro to instantiate a new TCL command. This may be the
+complete widget, or merely a component of it. One of the first operations
+should be to create a new window through the {\tt
+  newwin}(\S\ref{TCLnewwin}) TCL command. After that, the instrument may
+be encoded entirely in TCL code, using the {\tt get}(\S\ref{TCLget}) call
+to return state variables as TCL lists. Alternatively, you may write C++
+code to access the state variables directly through the array class. The
+{\tt ecolab.h} header defines references to the generic state variables
+as:
+\begin{verbatim}
+extern global global_vars;
+extern int &ocell, &ncells, &tstep;
+extern iarray &nsp, &dims;
+\end{verbatim}
+
+Furthermore, the following model specific variables are defined in {\tt
+  ecolab.cc} for the ecolab model outlined in \S\ref{model}.
+\begin{verbatim}
+extern iarray &density;
+extern iarray &create;
+extern iarray &species;
+extern array &repro_rate;
+extern array &mutation;
+extern sparse_mat &interaction;
+\end{verbatim}
+The references themselves point to the appropriate members of {\tt
+  global\_vars}. In terms of the model defined in \S\ref{model}, {\tt
+  ocell} refers to the origin cell on this processor (this is zero on
+processor 0 e.g. on a uniprocessor). {\tt ncells} refers to the number
+of cells on this processor, and {\tt tstep} the timestep (which
+incremented on each call to generate). {\tt nsp} is an array (of size
+{\tt ncells}), that contains the list of \nsp{}s for the cells on the
+processor. {\tt dims} contains the array of dimension sizes for
+mapping the cell structure back to physical space. see
+\S\ref{spatial}. {\tt density} is \bn, {\tt repro\_rate} is \br, {\tt
+  mutation} is \bmu{} and {\tt interaction} is \bbeta. {\tt species}
+is used to enumerate species (position within the arrays don't count,
+as after condensing, extinct species are removed from the system).
+{\tt create} is used in the {\tt lifetimes}(\S\ref{lifetimes})
+command.
+
+\section{Creating a New Model}\label{new model}
+
+The code that explicitly defines the ecolab model is contained in {\tt
+  ecolab.cc}. An example of a completely different model is contained in
+{\tt newman.cc}, and {\tt newman.tcl}.  This implements a generalisation
+of a model described by \cite{Newman97} where the species density is a
+boolean value (either a species is extinct, (value=0) or it is alive). The
+dynamics are controlled by a set of threshhold values, which are different
+for different species, and a randomly generated stress $\eta$ which
+follows some distribution $P_{\rm stress}(\eta)$ (eg Gaussian). If the
+stress exceeds that of the species' threshold, then the species becomes
+extinct. There is a small additional probability that a species becomes
+extinct even when the threshold is not extinct (decreasing proportionally
+to the amount that the threshold is greater than the stress). This
+prevents the system becoming stuck with maximally fit organisms (maximal
+thresholds). Mutation is performed in a similar way to ecolab, although
+there is no need to consider an interaction matrix. The number of mutants
+is computed such that the average no. of mutations equals the average
+number of extinctions. This is to keep the number of species roughly
+constant in time, although it can fluctuate around the mean. This is a
+generalization of Mark Newman's constant species condition, and appears to
+be necessary to avoid the system exploding or crashing to zero.
+
+The main items that need to be constructed in a model file are:
+\begin{enumerate}
+\item declaration of the state variables
+\item A subroutine to initialize the state variables {\tt
+    init\_global\_vars}, that call routines in {\tt init\_arrays.cc}\S\ref{init_arrays}.
+\item A TCL command to step the simulation, and perform mutations.
+\item A TCL command for housekeeping roles, such as {\tt condense}
+\item TCL interfaces to widgets such as {\tt display} or {\tt connect\_plot}
+\item TCL interface for returning state variables as lists {\tt get}
+\item Any other more explicit computations, such as {\tt lifetimes}
+  or {\tt max\_eig}.
+\end{enumerate}
+

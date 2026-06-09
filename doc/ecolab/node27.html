@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creating a New Model</TITLE>
+<META NAME="description" CONTENT="Creating a New Model">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node28.html">
+<LINK REL="previous" HREF="node26.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node28.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html414"
+ HREF="node28.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html411"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html405"
+ HREF="node26.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html413"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html415"
+ HREF="node28.html">Spatial Variation</A>
+<B> Up:</B> <A NAME="tex2html412"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html406"
+ HREF="node26.html">Creating New Instruments</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000">&#160;</A><A NAME="new_model">&#160;</A>
+<BR>
+Creating a New Model
+</H1>
+
+<P>
+The code that explicitly defines the ecolab model is contained in <TT>  ecolab.cc</TT>. An example of a completely different model is contained in
+<TT>newman.cc</TT>, and <TT>newman.tcl</TT>.  This implements a generalisation
+of a model described by [<A
+ HREF="node55.html#Newman97">1</A>] where the species density is a
+boolean value (either a species is extinct, (value=0) or it is alive). The
+dynamics are controlled by a set of threshhold values, which are different
+for different species, and a randomly generated stress <IMG
+ WIDTH="13" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$\eta$">
+which
+follows some distribution 
+<!-- MATH: $P_{\rm stress}(\eta)$ -->
+<IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$P_{\rm stress}(\eta)$">
+(eg Gaussian). If the
+stress exceeds that of the species' threshold, then the species becomes
+extinct. There is a small additional probability that a species becomes
+extinct even when the threshold is not extinct (decreasing proportionally
+to the amount that the threshold is greater than the stress). This
+prevents the system becoming stuck with maximally fit organisms (maximal
+thresholds). Mutation is performed in a similar way to ecolab, although
+there is no need to consider an interaction matrix. The number of mutants
+is computed such that the average no. of mutations equals the average
+number of extinctions. This is to keep the number of species roughly
+constant in time, although it can fluctuate around the mean. This is a
+generalization of Mark Newman's constant species condition, and appears to
+be necessary to avoid the system exploding or crashing to zero.
+
+<P>
+The main items that need to be constructed in a model file are:
+<DL COMPACT>
+<DT>1.
+<DD>declaration of the state variables
+<DT>2.
+<DD>A subroutine to initialize the state variables <TT>    init_global_vars</TT>, that call routines in <TT>init_arrays.cc</TT>&#167;<A HREF="node47.html#init_arrays">10</A>.
+<DT>3.
+<DD>A TCL command to step the simulation, and perform mutations.
+<DT>4.
+<DD>A TCL command for housekeeping roles, such as <TT>condense</TT>
+<DT>5.
+<DD>TCL interfaces to widgets such as <TT>display</TT> or <TT>connect_plot</TT>
+<DT>6.
+<DD>TCL interface for returning state variables as lists <TT>get</TT>
+<DT>7.
+<DD>Any other more explicit computations, such as <TT>lifetimes</TT>
+or <TT>max_eig</TT>.
+</DL>
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html414"
+ HREF="node28.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html411"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html405"
+ HREF="node26.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html413"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html415"
+ HREF="node28.html">Spatial Variation</A>
+<B> Up:</B> <A NAME="tex2html412"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html406"
+ HREF="node26.html">Creating New Instruments</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

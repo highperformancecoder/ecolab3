@@ -1,0 +1,5 @@
+latex ecolab
+latex ecolab
+dvips ecolab
+latex2html ecolab
+rm *~ *.aux *.dvi *.log *.blg *.toc *.lof

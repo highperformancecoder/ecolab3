@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tclindex</TITLE>
+<META NAME="description" CONTENT="tclindex">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="previous" HREF="node35.html">
+<LINK REL="up" HREF="node30.html">
+<LINK REL="next" HREF="node37.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html516"
+ HREF="node37.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html513"
+ HREF="node30.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html509"
+ HREF="node35.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html515"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html517"
+ HREF="node37.html">arrays</A>
+<B> Up:</B> <A NAME="tex2html514"
+ HREF="node30.html">tcl++</A>
+<B> Previous:</B> <A NAME="tex2html510"
+ HREF="node35.html">tclreturn</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00096000000000000000">
+tclindex</A>
+</H2>
+
+<P>
+This class is used to index through a TCL array. TCL arrays can have
+arbitrary strings for indices, and are not necessarily ordered. The
+class has three main methods: <TT>start</TT>, which takes a <TT>tclvar</TT>
+variable that refers to the array, and returns the first element in
+the array; <TT>incr</TT>, which returns the next element of the array;
+and <TT>last</TT> which returns 1 if the last element has been read. A
+sample usage might be (for computing the product of all elements in
+the array <TT>dims</TT>):
+<PRE>
+tclvar dims="dims";
+tclindex idx;
+for (ncells *= (int)idx.start(dims); !idx.last(); ncells *= (int)idx.incr() );
+</PRE>
+<P>
+The class definition is given by:
+<PRE>
+class tclindex  
+{
+public:
+  tclindex();
+  tclindex(tclindex&amp;);
+  ~tclindex() {done();}
+  tclvar start(tclvar&amp;);
+  inline tclvar incr();
+  tclvar incr(tclvar&amp; x) {incr();}  
+  int last();
+};
+</PRE>
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

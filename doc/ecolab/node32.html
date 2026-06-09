@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creating a Tcl command</TITLE>
+<META NAME="description" CONTENT="Creating a Tcl command">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node33.html">
+<LINK REL="previous" HREF="node31.html">
+<LINK REL="up" HREF="node30.html">
+<LINK REL="next" HREF="node33.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html474"
+ HREF="node33.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html471"
+ HREF="node30.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html465"
+ HREF="node31.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html473"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html475"
+ HREF="node33.html">tclvar</A>
+<B> Up:</B> <A NAME="tex2html472"
+ HREF="node30.html">tcl++</A>
+<B> Previous:</B> <A NAME="tex2html466"
+ HREF="node31.html">Global Variables</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00092000000000000000">
+Creating a Tcl command</A>
+</H2>
+To register a procedure, use the <code>NEWCMD</code> macro. It takes two
+arguments, the first is the name of the Tcl command to be created, the
+second is the number of arguments that the Tcl command takes.
+<code>NEWCMD</code> does the following:
+<UL>
+<LI>lodges  the commands with the interpreter prior to the
+execution of tclmain,
+<LI>sets up the longjmp label to trap errors,
+<LI>checks that the declared number of arguments match the actual
+number (type checking is beyond the ANSI C Preprocessor!)
+<LI>executes the contents of the macro <code>GLOBAL_INIT_HOOK</code>,
+which can be set to (for example) initialize any global variables from
+Tcl variables.
+<LI>declares a void returning C++ function of the same name as the
+Tcl command. The arguments are passed via the argc, argv
+mechanism. All that is required is the body of the function to be put
+in.
+</UL>
+<P>
+Here is an example.
+<PRE>
+#include "tcl++.h"
+
+#undef GLOBAL_INIT_HOOK
+#define GLOBAL_INIT_HOOK init_funny();
+
+static int funny;
+
+void init_funny()  /* this must be declared before NEWCMD */
+{
+   if ( 
+     Tcl_GetInt(interp, 
+        Tcl_GetVar(interp,"funny",TCL_GLOBAL_ONLY), 
+        &amp;funny) 
+     !=TCL_OK) error("funny not found"); 
+}
+
+
+NEWCMD(silly_cmd,1)
+{printf("argv[1]=%s funny=%d\n", argv[1], funny);}
+</PRE>This creates a Tcl command that prints out its argument, and the value
+of the variable <code>funny</code>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>init_arrays module</TITLE>
+<META NAME="description" CONTENT="init_arrays module">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node48.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="ecolab.html">
+<LINK REL="next" HREF="node48.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html646"
+ HREF="node48.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html643"
+ HREF="ecolab.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html637"
+ HREF="node46.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html645"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html647"
+ HREF="node48.html">Globals class</A>
+<B> Up:</B> <A NAME="tex2html644"
+ HREF="ecolab.html">EcoLab Documentation</A>
+<B> Previous:</B> <A NAME="tex2html638"
+ HREF="node46.html">Stream Functions</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000">&#160;</A><A NAME="init_arrays">&#160;</A>
+<BR>
+init_arrays module
+</H1>
+
+<P>
+<PRE>
+void initialize(array&amp; data, char *tclname)
+void initialize_offdiag(sparse_mat&amp; interact, char *nm, int size)
+</PRE>
+<P>
+This module provides routines for initialising the model state
+variables. <TT>initalize</TT> provides a means of initialising an array
+(or iarray) using a TCL handle <TT>tclname</TT>. The Ecolab model arrays
+are defined by the following code:
+<PRE>
+density = iarray(sum(nsp));
+initialize( density,"density");
+repro_rate = array(density.size);
+initialize( repro_rate,"repro_rate");
+mutation = array(density.size);
+initialize( mutation,"mutation");
+interaction = sparse_mat(density.size);
+initialize( interaction.diag, "interaction(diag)" );
+</PRE>
+<P>
+Variables of type
+<code>array</code> or <code>iarray</code> may be initialised by assigning the
+following array elements:
+<DL>
+<DT><STRONG>list</STRONG>
+<DD>The value of the array element is either a value, which is
+copied into each element of the variable, or it is a Tcl list of
+exactly 
+<!-- MATH: $n_{\rm sp}$ -->
+<IMG
+ WIDTH="27" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$n_{\rm sp}$">
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

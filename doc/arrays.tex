@@ -1,0 +1,300 @@
+\section{arrays}
+
+This section documents the array and related data types. These are
+dynamically sized, with the size stored at all times in the size
+member. These classes are written as a C++ wrapper around a C Library
+{\tt c\_arrays}. This enables the {\tt c\_arrays} library to be
+implemented to make use of parallel computation and an example
+implementation in C* ({\tt cs\_arrays.cs}) is provided. Unfortunately,
+the function \verb|offmul| is actually the computationally dominant
+routine, and this proves to be the most difficult to optimise for
+parallel computers.
+
+\subsection{array and iarray}\label{array}
+
+\begin{verbatim}
+
+class array
+{
+ public:
+
+  int size; 
+  void *list;  
+
+  array (int s=0);
+  array ( array & x);
+  ~ array ();
+  array  operator=( array  x); 
+
+  operator double *();
+  array  operator=( double  * x);
+
+  /* unary minus */
+  array  operator-();
+
+  /* binary arithmetic operators */
+  array   operator  +  (  array   x);
+  array   operator  -  (  array   x);
+  array   operator  *  (  array   x);
+  array   operator  /  (  array   x);
+
+  /* binary comparison operators */
+  iarray  operator  <  (  array   x);
+  iarray  operator  <=  (  array   x);
+  iarray  operator  >  (  array   x);
+  iarray  operator  >=  (  array   x);
+  iarray  operator  ==  (  array   x);
+  iarray  operator  !=  (  array   x);
+
+  /* concatenation */
+  array  operator << ( array  x);
+
+  /* broadcast arithmetic ops - commutative equivalents defined
+  elsewhere */
+  array   operator  +  (  double   x);
+  array   operator  -  (  double   x);
+  array   operator  *  (  double   x);
+  array   operator  /  (  double   x);
+
+  /* broadcast comparison ops  - commutative equivalents defined
+  elsewhere */
+  iarray  operator  <  (  double   x); 
+  iarray  operator  <=  (  double   x);
+  iarray  operator  >  (  double   x);
+  iarray  operator  >=  (  double   x);
+  iarray  operator  ==  (  double   x);
+  iarray  operator  !=  (  double   x);
+
+  /* concatenate an element  - commutative equivalents defined
+  elsewhere */
+  array  operator << ( double  x);
+
+  /* compound assignment */
+  array   operator  += (  array   x);
+  array   operator  += (  double   x); /* broadcast add to */
+  array   operator  -= (  array   x);
+  array   operator  -= (  double   x);
+  array   operator  *= (  array   x);
+  array   operator  *= (  double   x);
+  array   operator  /= (  array   x);
+  array   operator  /= (  double   x);
+  array   operator  <<= (  array   x); /* compound concatenation */ 
+  array   operator  <<= (  double   x);
+
+  /* index operations */
+#ifdef CONTIGUOUS
+  double&   operator[](int);
+#else
+  par_addr_double operator[](int);
+#endif
+  par_addr_array  operator[](iarray); /* gather/scatter ops */
+
+/* all of the previous routines have been defined for the iarray class
+as well, with every occurance of array being replace by iarray, and
+every occurance of double being replaced by int */
+
+/* multiply an array by an iarray */
+  inline array operator*(iarray);
+
+/* broadcast an integer to an array */
+  array operator=(int x);
+
+/* probabilistically round an array to an iarray. See rounding below */
+  operator iarray();
+};  
+
+class iarray
+{
+ public:
+  /* all the previous methods defined for array ar also defined
+     equivalently for iarray */
+
+  /* extra iarray methods */
+  /* boolean operators */
+  iarray operator ! ();
+  iarray operator  && (iarray x);
+  iarray operator || (iarray x);
+  iarray operator&=(iarray x) {return *this = *this && x;}
+  iarray operator|=(iarray x) {return *this = *this || x;}
+
+ /* probabilistic assignment - see rounding below */
+  void operator=(array x);    
+  void operator+=(array x);  
+
+ /* convert to array */
+  inline operator array();
+}
+
+\end{verbatim}
+
+The implementation of the data storage is pointed to by
+\verb|list|. More than one array variable may have the same
+\verb|list| pointer, so that assignment does not involve copying of
+the data, just copying the list pointer. This allows arrays to be
+passed by value efficiently in the C++ code. In the case where {\tt
+  list} points to a contiguous memory location where the data is
+stored, defining {\tt CONTIGUOUS} allows obvious optimisations for
+index operations.
+
+iarray is the integer version of array. Binary operations +,*,=
+etc. have been defined elementwise, otherwise a scalar value may be
+broadcast over the whole array. The concatenation operation joins two
+arrays to make a larger array, e.g. $\{1,2,3\} << \{4,5,6\} =
+\{1,2,3,4,5,6\}$. 
+
+\subsubsection{Indexing and Gather/Scatter}
+
+The expression \verb|a[10]| is meant to be an {\em lvalue} (i.e. can
+be assigned to) that refers to the tenth element of a. When the values
+of a are internally stored in a contiguous memory location, this is
+easy, with the method returning a reference. However, if the data is
+stored in a distributed fashion, references are not possible, and a
+function will need to be called to extract the value, or alternatively
+alter the value, depending on the context. This achieved by a helper
+class \verb|par_addr_double|. This can either be type cast to a
+\verb|double|, in which case the function returning the value of
+\verb|a[i]| is called, alternatively, it can be assigned to, in which
+case the alteration function is called. If more than one array
+variable refers to the same underlying data, a copy is made of the
+data before an array element is altered.
+
+A {\em gather} operation, or {\em vector index} operation is expressed
+by \verb|a[i]| where {\tt i} is an {\tt iarray} variable. The
+expression \verb|a[i]=x| {\em scatters} the values of {\tt x} into the
+array {\tt a} according to the vector {\tt i}. Naturally, the length
+of {\tt i} and {\tt x} must agree. A fresh copy of {\tt a} data is
+made if needed.
+
+
+\subsubsection{Rounding}
+
+The assignment of an array variable to an iarray variable is
+interesting, in that the results are rounded up or down
+probabilistically. If a value 0.2 is to be assigned, then it has an
+80\% chance of being rounded down to 0, and a 20\% chance of being
+rounded up to 1.
+
+\subsection{{\tt sparse\_mat}}\label{interact_array}
+
+The {\tt sparse\_mat} data type is designed to hold the
+interaction matrix \bbeta, which is generally a sparse matrix. It is
+built up of array and iarray components:
+
+\begin{verbatim}
+class interact_array
+{
+ public:
+  array diag, val;
+  iarray row, col;
+  sparse_mat(int s=0, int o=0)
+    {diag=array(s); val=array(o); row=iarray(o); col=iarray(o);}
+  array operator*(iarray& x);  /* matrix multiplication */
+  sparse_mat operator=(sparse_mat x);
+};
+\end{verbatim}
+
+{\tt diag} stores the diagonal components of the array, {\tt val} is
+the packed list of offdiagonal values, with {\tt row} and {\tt col}
+being the index lists. The only important operator defined for this
+class is the matrix operation, which is defined as
+\begin{verbatim}
+beta*x == beta.diag*x + (beta.val*x[beta.col])[beta.row]
+\end{verbatim}
+but is implemented separately for efficiency reasons.
+
+It is possible to represent the offdiagonal array differently  for
+efficiency reasons. For example, if it is desired to represent the
+offdiagonal elements as a dense 2D array, one can create an extra
+pointer in the underlying implementation of array. Most of the time,
+this pointer is NULL, but when the \verb|cs_arrays| routine
+\verb|offmul| is called, it will check this pointer for the {\tt val}
+array. If it is NULL, it will create the efficient
+representation, otherwise it will reuse the existing one. Because the
+only way the array's actual value will get out of synch with the
+efficient representation is by index assignment, \verb|put_double()|
+and \verb|put_double_array| (as well as obviously
+\verb|delete_array()|) will need to be modified to deallocate the
+efficient representation.
+
+\subsection{Global functions}
+
+In all of the following, if it reasonable for an iarray version to
+exist, then it will.
+
+\begin{itemize}
+\item array {\tt merge}( iarray {\em mask}, array {\em a}, array {\em b} )
+
+return an array (or iarray) {\em r} such that where {\em mask[i]==1},
+{\em r[i]=a[i]}, otherwise {\em r[i]=b[i]}.
+
+\item array {\tt pack}( array {\em x}, iarray {\em mask}, [int {\em
+ntrue}])
+
+Construct a new array from elements of  {\em x} that correspond to
+where the mask is true. {\em ntrue} is an optional parameter equal to
+the number of true elements of {\em mask}. If not given, then {\tt
+pack} will count the true elements of {\em mask}. Give this parameter
+if you are using the same {\em mask} in multiple {\tt pack} statements.
+
+\item iarray {\tt enumerate}(iarray {\em mask})
+
+Return the running sum of mask.
+
+\item iarray {\tt pcoord}( int {\em size})
+
+return [0..size-1]
+
+\item iarray {\tt gen\_index}(iarray {\em x}) 
+
+generate a list of species numbers, with each number appearing in the
+list according to the value passed in its position. For example, if
+{\em x}=\{0,0,1,2,0,1\} then the output from this program will be
+\{3,4,4,6\}
+
+
+\end{itemize}
+
+\subsubsection{Reduction functions}
+
+\begin{itemize}
+\item double {\tt max}( array {\em x}, [iarray {\em mask}]) 
+\item double {\tt min}( array {\em x}, [iarray {\em mask}]) 
+\item double {\tt sum}( array {\em x}, [iarray {\em mask}]) 
+
+Return the maximum, minimum and sum of an array, optionally masked.
+
+\end{itemize}
+
+\subsubsection{Array functions}
+\begin{itemize}
+\item array {\tt abs}(array {\em x})
+\item iarray {\tt sign}(array {\em x})
+\item array {\tt exp}(array {\em x})
+\item array {\tt log}(array {\em x})
+\end{itemize}
+
+\subsubsection{Random number functions}
+
+\begin{itemize}
+\item void {\tt fillrand}(array {\em x}) 
+
+Fill {\em x} with random numbers from the uniform distribution over $[0,1]$
+
+\item void {\tt fillprand}(array {\em x})
+
+Fill {\em x} with random numbers from the Poisson distribution $e^{-x}$
+
+\item void {\tt fillgrand}(array {\em x})
+
+Fill {\em x} with random numbers from the Gaussian distribution $e^{-x^2/4}$
+
+\end{itemize}
+
+\subsubsection{Stream Functions}
+\begin{itemize}
+\item \verb|ostream& operator<<(ostream& s, array x)|
+\item \verb|ostream& operator<<(ostream& s, iarray x)|
+\item \verb|ostream& operator<<(ostream& s, par_addr_double x)|
+\item \verb|ostream& operator<<(ostream& s, par_addr_int x)|
+\end{itemize}
+

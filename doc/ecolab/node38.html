@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!--Converted with LaTeX2HTML 98.1p1 release (March 2nd, 1998)
+originally by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>array and iarray</TITLE>
+<META NAME="description" CONTENT="array and iarray">
+<META NAME="keywords" CONTENT="ecolab">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="ecolab.css">
+<LINK REL="next" HREF="node41.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="node37.html">
+<LINK REL="next" HREF="node39.html">
+</HEAD>
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html547"
+ HREF="node39.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/icons/next_motif.gif"></A> 
+<A NAME="tex2html544"
+ HREF="node37.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/icons/up_motif.gif"></A> 
+<A NAME="tex2html538"
+ HREF="node37.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/icons/previous_motif.gif"></A> 
+<A NAME="tex2html546"
+ HREF="node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents"
+ SRC="/icons/contents_motif.gif"></A>  
+<BR>
+<B> Next:</B> <A NAME="tex2html548"
+ HREF="node39.html">Indexing and Gather/Scatter</A>
+<B> Up:</B> <A NAME="tex2html545"
+ HREF="node37.html">arrays</A>
+<B> Previous:</B> <A NAME="tex2html539"
+ HREF="node37.html">arrays</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000101000000000000000">&#160;</A><A NAME="array">&#160;</A>
+<BR>
+array and iarray
+</H2>
+
+<P>
+<PRE>
+class array
+{
+ public:
+
+  int size; 
+  void *list;  
+
+  array (int s=0);
+  array ( array &amp; x);
+  ~ array ();
+  array  operator=( array  x); 
+
+  operator double *();
+  array  operator=( double  * x);
+
+  /* unary minus */
+  array  operator-();
+
+  /* binary arithmetic operators */
+  array   operator  +  (  array   x);
+  array   operator  -  (  array   x);
+  array   operator  *  (  array   x);
+  array   operator  /  (  array   x);
+
+  /* binary comparison operators */
+  iarray  operator  &lt;  (  array   x);
+  iarray  operator  &lt;=  (  array   x);
+  iarray  operator  &gt;  (  array   x);
+  iarray  operator  &gt;=  (  array   x);
+  iarray  operator  ==  (  array   x);
+  iarray  operator  !=  (  array   x);
+
+  /* concatenation */
+  array  operator &lt;&lt; ( array  x);
+
+  /* broadcast arithmetic ops - commutative equivalents defined
+  elsewhere */
+  array   operator  +  (  double   x);
+  array   operator  -  (  double   x);
+  array   operator  *  (  double   x);
+  array   operator  /  (  double   x);
+
+  /* broadcast comparison ops  - commutative equivalents defined
+  elsewhere */
+  iarray  operator  &lt;  (  double   x); 
+  iarray  operator  &lt;=  (  double   x);
+  iarray  operator  &gt;  (  double   x);
+  iarray  operator  &gt;=  (  double   x);
+  iarray  operator  ==  (  double   x);
+  iarray  operator  !=  (  double   x);
+
+  /* concatenate an element  - commutative equivalents defined
+  elsewhere */
+  array  operator &lt;&lt; ( double  x);
+
+  /* compound assignment */
+  array   operator  += (  array   x);
+  array   operator  += (  double   x); /* broadcast add to */
+  array   operator  -= (  array   x);
+  array   operator  -= (  double   x);
+  array   operator  *= (  array   x);
+  array   operator  *= (  double   x);
+  array   operator  /= (  array   x);
+  array   operator  /= (  double   x);
+  array   operator  &lt;&lt;= (  array   x); /* compound concatenation */ 
+  array   operator  &lt;&lt;= (  double   x);
+
+  /* index operations */
+#ifdef CONTIGUOUS
+  double&amp;   operator[](int);
+#else
+  par_addr_double operator[](int);
+#endif
+  par_addr_array  operator[](iarray); /* gather/scatter ops */
+
+/* all of the previous routines have been defined for the iarray class
+as well, with every occurance of array being replace by iarray, and
+every occurance of double being replaced by int */
+
+/* multiply an array by an iarray */
+  inline array operator*(iarray);
+
+/* broadcast an integer to an array */
+  array operator=(int x);
+
+/* probabilistically round an array to an iarray. See rounding below */
+  operator iarray();
+};  
+
+class iarray
+{
+ public:
+  /* all the previous methods defined for array ar also defined
+     equivalently for iarray */
+
+  /* extra iarray methods */
+  /* boolean operators */
+  iarray operator ! ();
+  iarray operator  &amp;&amp; (iarray x);
+  iarray operator || (iarray x);
+  iarray operator&amp;=(iarray x) {return *this = *this &amp;&amp; x;}
+  iarray operator|=(iarray x) {return *this = *this || x;}
+
+ /* probabilistic assignment - see rounding below */
+  void operator=(array x);    
+  void operator+=(array x);  
+
+ /* convert to array */
+  inline operator array();
+}
+</PRE>
+<P>
+The implementation of the data storage is pointed to by
+<code>list</code>. More than one array variable may have the same
+<code>list</code> pointer, so that assignment does not involve copying of
+the data, just copying the list pointer. This allows arrays to be
+passed by value efficiently in the C++ code. In the case where <TT>  list</TT> points to a contiguous memory location where the data is
+stored, defining <TT>CONTIGUOUS</TT> allows obvious optimisations for
+index operations.
+
+<P>
+iarray is the integer version of array. Binary operations +,*,=
+etc. have been defined elementwise, otherwise a scalar value may be
+broadcast over the whole array. The concatenation operation joins two
+arrays to make a larger array, e.g. 
+<!-- MATH: $\{1,2,3\} << \{4,5,6\} =
+\{1,2,3,4,5,6\}$ -->
+<IMG
+ WIDTH="266" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.gif"
+ ALT="$\{1,2,3\} << \{4,5,6\} =
+\{1,2,3,4,5,6\}$">.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS">&#160;</A>
+<UL>
+<LI><A NAME="tex2html549"
+ HREF="node39.html">Indexing and Gather/Scatter</A>
+<LI><A NAME="tex2html550"
+ HREF="node40.html">Rounding</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+<I>Russell Standish</I>
+<BR><I>2000-03-30</I>
+</ADDRESS>
+</BODY>
+</HTML>

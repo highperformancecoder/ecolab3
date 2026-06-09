@@ -1,0 +1,63 @@
+\section{Spatial Variation}\label{spatial}
+
+The ecolab model can run in multicellular mode by assigning to the
+{\tt dims}. The model in equation \ref{lotka-volterra} is replicated
+in each cell. The idea behind this is to set up a spatially dependent
+model. In case of two dimensional space, one can specify the x and y
+dimensions by assigning the following values as part of the input
+parameters \S\ref{input parameters}:
+\begin{verbatim}
+set dims(x) 10
+set dims(y) 20
+\end{verbatim}
+This specifies a $10\times20$ grid of 200 cells.
+The array indices ``x'' and ``y'' are purely arbitrary, one could use
+``0'' and ``1'' instead.
+
+In the multicellular case, the number of species in each cell is set
+to be the value of the TCL variable {\tt nsp}. In order to specify
+different numbers of species in each cell at initialisation, one can
+assign to the {\tt nsp} array, in the following syntax (eg a 2D
+system):
+\begin{verbatim}
+set nsp(0,0) 10
+set nsp(0,1) 12
+set nsp(1,0) 15
+set nsp(1,1) 13
+\end{verbatim}
+
+One can also initialise other state variables with spatial dependence
+by appending cell indices, e.g.
+\begin{verbatim}
+set density(list,0,0) 100
+set density(list,0,1) 100
+set density(list,1,0) 100
+set density(list,1,1) 100
+\end{verbatim}
+In this case, one may need to write a short TCL loop to intialise a
+particular pattern. This feature is not yet implemented as of version 3.2
+
+Migration is performed using the {\tt migrate}\ref{migrate} operator.
+
+\subsection{Parallel Execution}
+
+A multicellular model can be run on an MPI parallel system by
+compiling with the MPI flags turned on. Ecolab distributes the cells
+across the processors in a block fashion. A TCL command can be
+written that executes on all processors by placing the {\tt PARALLEL}
+directive at the start of the command. Otherwise (by default) all code
+executes just on processor 0. An example of a useful utility function is
+{\tt get\_all\_globals} which assembles a complete representation of
+the whole system on processor 0. This uses the {\tt PARALLEL give\_me}
+command to obtain the slave processor state variables. There is a
+corresponding {\tt take\_it} command to push state variable out to all
+the slaves. These expect the master process to broadcast the data, so
+these routines should not be called from TCL scripts, otherwise Ecolab
+will hang.
+
+Work on using the spatial Ecolab is reported in
+\cite{Standish98c}. The model showed good scalability, and even
+superlinear speedup in some circumstances.
+
+The parallel coding practices employed in Ecolab are experimental, and
+may well change in the next release.
