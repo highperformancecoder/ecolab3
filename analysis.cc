@@ -1,7 +1,7 @@
 
 #include <float.h>
 #include <math.h>
-#include <strstream.h>
+#include <strstream>
 #include <unistd.h>
 
 #include "arrays.h"
@@ -26,7 +26,7 @@ palette_class::palette_class()
   if (size==0)
    {
      tclvar palette("palette");
-     char **elem;
+     const char **elem;
 
      if (exists(palette))
        {
@@ -284,7 +284,7 @@ NEWCMD(setmaxmin,1)
 
   double lmax=max, lmin=min;
 
-  while (fgets(buf,100,f)>0)
+  while (fgets(buf,100,f))
     {
       double v=atof(buf);
       if (v>lmax) lmax=v;
@@ -363,7 +363,7 @@ NEWCMD(newwin,1)
 NEWCMD(max,1)
 {
   int i,n;
-  char **v;
+  const char **v;
   double m=DBL_MIN;
   tclreturn result;
   if (Tcl_SplitList(interp,argv[1],&n,&v)==TCL_OK)
@@ -375,7 +375,7 @@ NEWCMD(max,1)
 NEWCMD(min,1)
 {
   int i,n;
-  char **v;
+  const char **v;
   double m=DBL_MAX;
   tclreturn result;
   if (Tcl_SplitList(interp,argv[1],&n,&v)==TCL_OK)
@@ -387,7 +387,7 @@ NEWCMD(min,1)
 NEWCMD(av,1)
 {
   int i,n;
-  char **v;
+  const char **v;
   double m=0;
   tclreturn result;
   if (Tcl_SplitList(interp,argv[1],&n,&v)==TCL_OK)

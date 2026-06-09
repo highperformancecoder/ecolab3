@@ -2,7 +2,7 @@
 DEBUGGING=1
 MEMDEBUG=
 TK36=
-BLT=1
+BLT=
 LAPACK=
 MPI=
 CM5=
@@ -23,6 +23,23 @@ LINK=g++
 # CPLUSPLUS, LINK and ARRAYS string.
 FLAGS+=-I/home/rks/usr/include -L/home/rks/usr/lib
 
+# where to look for installed software (prefix values)
+DIRS=$(HOME)/usr /usr/local /opt/local /usr /usr/X11R6
+
+# a search mechanism to find a particular file
+# use as $(call search,name)
+search=$(firstword $(foreach dir,$(DIRS),$(wildcard $(dir)/$(1))))
+
+TCLVERSION=$(shell . $(call search,lib*/tclConfig.sh); echo $$TCL_VERSION)
+LIBS+=$(shell . $(call search,lib*/tkConfig.sh); echo $$TK_LIB_FLAG $$TK_STUB_LIB_FLAG)
+FLAGS+=$(shell . $(call search,lib*/tkConfig.sh); echo $$TK_INCLUDE_SPEC)
+LIBS+=$(shell . $(call search,lib*/tclConfig.sh); echo $$TCL_LIB_SPEC $$TCL_STUB_LIB_FLAG $$TCL_LIBS) $(TKDEPLIBS)
+FLAGS+=$(shell . $(call search,lib*/tclConfig.sh); echo $$TCL_INCLUDE_SPEC)
+
+# XDR stuff
+LIBS+=$(shell if pkg-config libtirpc; then pkg-config --libs libtirpc; fi)
+
+$(warning $(LIBS))
 
 HOST=$(shell hostname)
 OS=$(shell uname)
@@ -116,7 +133,7 @@ endif
 # End of GNU Make dependent section
 # default flags go here
 FLAGS+=-L/usr/lib -L/usr/local/lib
-LIBS+= -L/usr/local/lib -L/usr/X11/lib -ltk -ltcl -lX11  -lm -lc
+LIBS+= -L/usr/local/lib -L/usr/X11/lib -lX11  -lm -lc
 #LIBS+= -L/usr/X11/lib -ltk8.0 -ltcl8.0 -lX11  -lm -lc
 #ARRAYS=c_arrays.o
 

@@ -18,7 +18,7 @@ extern "C" {
 void error(char *,...);
 }
 
-#include <iostream.h>
+#include <iostream>
 
 #include "newarrays.h"
 #endif

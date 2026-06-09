@@ -7,7 +7,7 @@ This file contains the code for the array classes
 #include <time.h>
 #include <string.h>
 #include "BitSet.h"
-#include <strstream.h>
+#include <strstream>
 #include "arrays.h"
 #include "tcl++.h"
 #include "globals.h"
@@ -16,17 +16,18 @@ This file contains the code for the array classes
 /* because of bug in g++ 2.7.0, we must declare strchr and strstr in C
 and write a wrapper */
 
-extern "C"  char* strstr_(char*,char*);
+extern "C"  char* strstr_(const char*,char*);
 extern int ngcells;  /* total number of cells in system = sum_p(ncells(p)) 
 			where p=0..nprocs */
 
 /* list abbreviations are defined here, is_int is a flag that is 1 if list 
 is an integer array, and 0 if it is a double array */
 
-static void assign_list(char* elementi, array& data)
+static void assign_list(const char* elementi, array& data)
 {int repeat;
  double start, end, incr;
- char *liststr = new char[strlen(elementi)], **element;
+ char *liststr = new char[strlen(elementi)];
+ const char **element;
  int elemc;
 
  if (sscanf(elementi,"%d*%s",&repeat,liststr)==2) /* Handle repeat counts */
@@ -100,8 +101,8 @@ Ecolab will delete the list once the array has been initialised.
 
   else if (exists(arr["list"]))
     {int elemc,i;
-     char **element;
-     if (Tcl_SplitList(interp,(char*)arr["list"],&elemc,&element)==TCL_OK)
+     const char **element;
+     if (Tcl_SplitList(interp,(const char*)arr["list"],&elemc,&element)==TCL_OK)
 	{
          if (elemc==1 && strstr_(element[0],"*:")==NULL)
 	   { /* single scalar value to be spread over array */
@@ -196,8 +197,8 @@ int initialize_offdiag(sparse_mat& interact, char *nm, int size)
       
    if (exists(tcl_offd["val"]))
     {int elemc;
-     char **element;
-     if (Tcl_SplitList(interp,(char*)tcl_offd["val"],&elemc,&element)==TCL_OK)
+     const char **element;
+     if (Tcl_SplitList(interp,(const char*)tcl_offd["val"],&elemc,&element)==TCL_OK)
        {
 	 for (i=0; i<elemc; i++)
 	     assign_list(element[i],interact.val);
@@ -207,8 +208,8 @@ int initialize_offdiag(sparse_mat& interact, char *nm, int size)
       
   if (exists(tcl_offd["row"]))
     {int elemc;
-     char **element;
-     if (Tcl_SplitList(interp,(char*)tcl_offd["row"],&elemc,&element)==TCL_OK)
+     const char **element;
+     if (Tcl_SplitList(interp,(const char*)tcl_offd["row"],&elemc,&element)==TCL_OK)
        {
 	 array tmp;
 	 for (i=0; i<elemc; i++)
@@ -220,8 +221,8 @@ int initialize_offdiag(sparse_mat& interact, char *nm, int size)
       
   if (exists(tcl_offd["col"]))
     {int elemc;
-     char **element;
-     if (Tcl_SplitList(interp,(char*)tcl_offd["col"],&elemc,&element)==TCL_OK)
+     const char **element;
+     if (Tcl_SplitList(interp,(const char*)tcl_offd["col"],&elemc,&element)==TCL_OK)
        {
 	 array tmp;
 	 for (i=0; i<elemc; i++)

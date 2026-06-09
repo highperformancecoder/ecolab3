@@ -1,6 +1,7 @@
 /* word wrap input to column 80 */
 #include <stdio.h>
-main()
+#include <stdlib.h>
+int main()
 {
   int c, col=0;
 

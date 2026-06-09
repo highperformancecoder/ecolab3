@@ -91,7 +91,7 @@ main(int argc, char* argv[])
 
 if (Tcl_EvalFile(interp,argv[1])!=TCL_OK)
     {
-      printf("%s\n",interp->result);
+      printf("%s\n",Tcl_GetStringResult(interp));
       printf("%s\n",Tcl_GetVar(interp,"errorInfo",0)); /* print out trace */
     }
   /* Clean up */
@@ -190,5 +190,5 @@ NEWCMD(cputime,0)
   MPI_Reduce(&r1,&r,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
 #endif
   tclreturn rr;
-  rr<<(float)r/CLK_TCK;
+  rr<<(float)r/sysconf(_SC_CLK_TCK);
 }

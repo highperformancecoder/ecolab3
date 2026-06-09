@@ -1,4 +1,4 @@
-#include <strstream.h>
+#include <strstream>
 #include <float.h>
 #include <string.h>
 #include "arrays.h"
@@ -6,6 +6,8 @@
 #include "globals.h"
 #include <hash_map>
 #include <new>
+
+using namespace std;
 
 char *index_name(int i)
 {

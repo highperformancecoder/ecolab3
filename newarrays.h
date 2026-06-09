@@ -625,22 +625,22 @@ Vary components according to a Gaussian distribution, with the given
 
 /* stream support */
 
-inline ostream& operator<<(ostream& s, array x)
+inline std::ostream& operator<<(std::ostream& s, array x)
 {
   for (int i=0; i<x.size; i++) s << (double) x[i] <<' ';
   return s;
 }
 
-inline ostream& operator<<(ostream& s, iarray x)
+inline std::ostream& operator<<(std::ostream& s, iarray x)
 {
   for (int i=0; i<x.size; i++) s << (int) x[i]<<' ';
   return s;
 }
 
-inline ostream& operator<<(ostream& s, par_addr_double x)
+inline std::ostream& operator<<(std::ostream& s, par_addr_double x)
 {  return s << (double) x; }
 
-inline ostream& operator<<(ostream& s, par_addr_int x)
+inline std::ostream& operator<<(std::ostream& s, par_addr_int x)
 {return s << (int) x;}
 
 void put(iarray,FILE*);

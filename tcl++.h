@@ -9,8 +9,8 @@ into a simple I/O stream and tclindex, a simple iterator through a TCL array */
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <iostream.h>
-#include <strstream.h>
+#include <iostream>
+#include <strstream>
 #include <tcl.h>
 #include <tk.h>
 #include <setjmp.h>
@@ -87,9 +87,9 @@ Usage:
   expected number of arguments disables this checking */
 
 #define NEWCMD(name,nargs) \
-  static void name(int argc, char* argv[]);\
+  static void name(int argc, const char* argv[]);\
   static int\
-     name##_wrap(ClientData cd,Tcl_Interp* interp,int argc,char* argv[])\
+     name##_wrap(ClientData cd,Tcl_Interp* interp,int argc,const char* argv[])\
   {     /* set up error return and check number of arguments */\
     if (setjmp(TclError)!=0) return TCL_ERROR;\
     if (nargs>=0 && nargs+1>argc) error("Incorrect number of arguments");\
@@ -99,7 +99,7 @@ Usage:
     return TCL_OK;\
   }\
   static init_cmd name##_init(#name,name##_wrap);  /*register cmd in interp*/\
-  static void name(int argc,char* argv[])
+  static void name(int argc,const char* argv[])
 
 class tclindex;
 
@@ -139,11 +139,11 @@ class tclvar
   ///tclvars may be freely mixed with arithmetic  expressions 
   double operator=(double x) {return dput(x);}
 
-  char* operator=(char* x) {return Tcl_SetVar(interp,name,x,0);}
+  const char* operator=(char* x) {return Tcl_SetVar(interp,name,x,0);}
   ///
   operator double () {return dget();}
   ///
-  operator char* () {return Tcl_GetVar(interp,name,TCL_GLOBAL_ONLY);}
+  operator const char* () {return Tcl_GetVar(interp,name,TCL_GLOBAL_ONLY);}
   ///
   operator int() {return (int)dget();}
   operator unsigned () {return (unsigned)dget();}
@@ -185,12 +185,12 @@ inline
   {
     double val;
     int ival;
-    char* tclval;
+    const char* tclval;
     tclval=Tcl_GetVar(interp,name,TCL_GLOBAL_ONLY);
     if (tclval!=NULL)
       {if (Tcl_GetDouble(interp,tclval,&val)!=TCL_OK)
 	 if (Tcl_GetBoolean(interp,tclval,&ival)!=TCL_OK)
-	   error("%s as the value of %s\n",interp->result,name);
+	   error("%s as the value of %s\n",Tcl_GetStringResult(interp),name);
 	 else
 	   return ival;
      }
@@ -202,7 +202,7 @@ inline
 inline
   double tclvar::dput(double x)
   { 
-    ostrstream value;
+    std::ostrstream value;
     value << x << '\0';
     Tcl_SetVar(interp,name,value.str(),TCL_GLOBAL_ONLY);
     return x;
@@ -285,8 +285,8 @@ inline
 
 // enable printing of tclvars through the stream process 
 inline
-ostream& operator<<(ostream& stream, tclvar x)
-{ return stream << (char*) x;}
+std::ostream& operator<<(std::ostream& stream, tclvar x)
+{ return stream << (const char*) x;}
 
 #define DBLSIZ 16 /* enough characters to hold a string rep of a double */
 #define INTSIZ 12 /* enough characters to hold a string rep of an int */
@@ -329,8 +329,8 @@ class tclcmd
 	{
 	  if (Tcl_Eval(interp,buffer)!=TCL_OK) error("");
 	  buffer[0] = '\0';
-	  result = (char*)Realloc(result, strlen(interp->result)+1);
-	  strcpy(result, interp->result);
+	  result = (char*)Realloc(result, strlen(Tcl_GetStringResult(interp))+1);
+	  strcpy(result, Tcl_GetStringResult(interp));
 	}
       return *this;
     }
@@ -367,7 +367,7 @@ class tclcmd
   tclcmd& operator|(tclvar x) {buffer[strlen(buffer)-1]='\0'; return *this<<x;}
 };
 
-class tclreturn: public ostrstream 
+class tclreturn: public std::ostrstream 
 {
  public:
   ~tclreturn()

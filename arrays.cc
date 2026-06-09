@@ -1,4 +1,6 @@
 #include "arrays.h"
+//using namespace std;
+using std::cout;
 
 /** submatrix extraction and insertion -- closest thing to full vector
     indexing of sparse matrices -- the latter is too computationally

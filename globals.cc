@@ -4,6 +4,12 @@
 #include "arrays.h"
 #include "globals.h"
 
+extern "C"
+{
+#include <rpc/types.h>
+#include <rpc/xdr.h>
+}
+
 iarray proc_dims;
 int ngcells;
 

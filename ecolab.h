@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <string.h>
 #include <limits.h>
-#include <strstream.h>
+#include <strstream>
 #include "arrays.h"
 #include "globals.h"
 #include "maxmin.h"

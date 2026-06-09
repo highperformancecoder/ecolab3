@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <limits.h>
 #ifndef RAND_MAX
 #define RAND_MAX  2147483647  /* This is missing from <stdlib.h>? */
@@ -236,22 +237,35 @@ void cs_gen_index(int size, int *r, int *x)
 enum array_dir_t {upwards, downwards};
 
 static int *idata;
-static int icmp(int *i, int *j) 
-{return (idata[*i]<idata[*j])? -1: (idata[*i]>idata[*j]);}
-static int ricmp(int *j, int *i) 
-{return (idata[*i]<idata[*j])? -1: (idata[*i]>idata[*j]);}
+static int icmp(const void* ip, const void* jp) 
+{
+  int i=*(int*)ip, j=*(int*)jp;
+  return (idata[i]<idata[j])? -1: (idata[i]>idata[j]);
+}
+static int ricmp(const void* jp, const void* ip) 
+{
+  int i=*(int*)ip, j=*(int*)jp;
+  return (idata[i]<idata[j])? -1: (idata[i]>idata[j]);
+}
 
 void iarray_rank(int size, int *r, int* x, enum array_dir_t dir)
 {
   idata=x; 
-  qsort( r, size, sizeof(int), (dir==upwards)? icmp: ricmp);
+  //  qsort( r, size, sizeof(int), (dir==upwards)? icmp: ricmp);
+  qsort(r, size, sizeof(int), (dir==upwards)? icmp: ricmp);
 }
 
 static double *ddata;
-static int dcmp(int *i, int *j) 
-{return (ddata[*i]<ddata[*j])? -1: (ddata[*i]>ddata[*j]);}
-static int rdcmp(int *j, int *i) 
-{return (ddata[*i]<ddata[*j])? -1: (ddata[*i]>ddata[*j]);}
+static int dcmp(const void* ip, const void* jp) 
+{
+  int i=*(int*)ip, j=*(int*)jp;
+    return (ddata[i]<ddata[j])? -1: (ddata[i]>ddata[j]);
+}
+static int rdcmp(const void* jp, const void* ip) 
+{
+  int i=*(int*)ip, j=*(int*)jp;
+  return (ddata[i]<ddata[j])? -1: (ddata[i]>ddata[j]);
+}
 
 void array_rank(int size, int *r, double* x, enum array_dir_t dir)
 {
