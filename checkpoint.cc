@@ -17,7 +17,7 @@ NEWCMD(reload,1)
   buffer.size=size;
   fclose(f);
 
-#if MPI
+#if USE_MPI
   /* we must remap to a possibly new processor layout */
   get_all_globals(global_vars);
   iarray cell_map(ncells), idx(ncells);
@@ -58,7 +58,7 @@ NEWCMD(checkpoint,1)
 {
   FILE *f;
   glue buffer;
-#if MPI
+#if USE_MPI
   global full_global=global_vars;
   get_all_globals(full_global);
   full_global.packup(buffer);

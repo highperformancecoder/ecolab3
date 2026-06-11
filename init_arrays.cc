@@ -316,7 +316,7 @@ void init_scalars()
     }
   else                      /* perform block layout */
     {
-#ifndef MPI
+#ifndef USE_MPI
       const int nprocs=1;
 #endif
       int i,j,d, tpk, nfactors, sn, tsn;
@@ -399,7 +399,7 @@ void init_scalars()
     }
 }
 
-#if MPI
+#if USE_MPI
 /* distribute global data out to other processors */
 void distribute_data()
 {

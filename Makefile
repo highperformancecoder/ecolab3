@@ -14,9 +14,15 @@ GCC=1
 
 
 #FLAGS+=-DTIMECMDS
+ifdef MPI
+CC=mpicc
+CPLUSPLUS=mpicxx
+LINK=mpicxx
+else
 CC=gcc
 CPLUSPLUS=g++
 LINK=g++
+endif
 
 # The following section uses GNU Make specific syntax. If not using
 # GNU Make, edit the  FLAGS, LIBS, CC,
@@ -89,8 +95,7 @@ FLAGS+=-L/usr/local/mpi/lib32 -L/usr/lib32 -L/usr/local/lib32
 endif
 
 ifdef MPI
-FLAGS+=-DMPI -I/usr/local/mpi/include -L/usr/local/mpi/lib
-LIBS+=-lmpi
+FLAGS+=-DUSE_MPI
 endif
 
 ifdef ZLIB

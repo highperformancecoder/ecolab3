@@ -28,7 +28,8 @@ extern "C" char *strchr_(char*,char);  /* bug in g++ 2.7.0 */
 /* these are defined to default values, even if MPI is false */
 extern int myid, nprocs;
 
-#if MPI
+#if USE_MPI
+#undef Status
 #include <mpi.h>
 /// Run a TCL command on all processors
 /** tclvars should all be declared before PARALLEL to propagate to slaves */
@@ -37,7 +38,7 @@ extern int myid, nprocs;
 /// maximum size of TCL command passed to slave processors 
 #define MAXPMSG 1024
 #define TAG_PUSH 1 
-void parsend(int,char**);
+void parsend(int,const char**);
 void parsend(char*,...);
 #else
 #define PARALLEL
@@ -233,9 +234,9 @@ inline
       name=new char[strlen(nm)+1];  /* 1st argument gives binding */
       strcpy(name,nm);
       if (val!=NULL) Tcl_SetVar(interp,name,(char*)val,0);
-#if MPI       /* broadcast master value to slaves */
+#if USE_MPI       /* broadcast master value to slaves */
       if (myid==0 && exists(*this))
-	parsend("set %s {%s}\n",name,(char*)*this);
+	parsend("set %s {%s}\n",name,(const char*)*this);
 #endif
     }
 

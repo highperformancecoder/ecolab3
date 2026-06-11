@@ -17,6 +17,8 @@ int Blt_Init(Tcl_Interp*);
 
 #include "tcl++.h"
 
+using namespace std;
+
 Tcl_Interp *interp=NULL;
 jmp_buf TclError;
 Tk_Window mainWin;
@@ -28,7 +30,7 @@ extern "C" void error(char *fmt,...)
   va_start(args, fmt);
   vsprintf(errstring,fmt,args);
   va_end(args);
-#if MPI
+#if USE_MPI
   if (myid>0)
     {
       printf("Error on %d: %s\n",myid,errstring);
@@ -45,7 +47,7 @@ extern "C" void error(char *fmt,...)
 }
 
 int myid=0, nprocs=1;   /* MPI task ID and no. of threads*/
-#if MPI
+#if USE_MPI
 #include <mpi.h>
 
 /* MPI slave command loop */
@@ -65,7 +67,7 @@ void do_slave_loop()
 main(int argc, char* argv[])
 {
 
-#ifdef MPI
+#ifdef USE_MPI
   MPI_Init(&argc,&argv);
   MPI_Comm_rank(MPI_COMM_WORLD,&myid);
   MPI_Comm_size(MPI_COMM_WORLD,&nprocs);
@@ -95,7 +97,7 @@ if (Tcl_EvalFile(interp,argv[1])!=TCL_OK)
       printf("%s\n",Tcl_GetVar(interp,"errorInfo",0)); /* print out trace */
     }
   /* Clean up */
-#ifdef MPI
+#ifdef USE_MPI
   parsend("finalize");
   MPI_Finalize();
 #endif
@@ -127,8 +129,8 @@ NEWCMD(map_mainwin,0)
   Tk_MainLoop();
 }
 
-#if MPI
-void parsend(int argc, char* argv[])
+#if USE_MPI
+void parsend(int argc, const char* argv[])
 {
   char buffer[MAXPMSG];
   ostrstream cmd(buffer,MAXPMSG);
@@ -185,7 +187,7 @@ NEWCMD(cputime,0)
   struct tms t;
   times(&t);
   int r=t.tms_utime+t.tms_stime;
-#ifdef MPI
+#ifdef USE_MPI
   int r1=r;
   MPI_Reduce(&r1,&r,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
 #endif

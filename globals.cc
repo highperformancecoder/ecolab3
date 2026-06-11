@@ -443,7 +443,7 @@ NEWCMD(dummy_model,0)
   for (i=0; i<global_vars.nspars; i++) global_vars.sparse_mats[i]=sparse_mat(1,0);
 }
 
-#if MPI
+#if USE_MPI
 
 /* this routine matches distribute_data in init_arrays.cc */
 

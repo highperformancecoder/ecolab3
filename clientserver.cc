@@ -122,7 +122,7 @@ static void dumpdata(ClientData cd, Tcl_Channel channel, char* host, int port)
   char bufsize[BUFSIZE_LABEL], *sendbuf;
   uLongf compsz; 
   static char *compbuf=NULL;
-#ifdef MPI
+#ifdef USE_MPI
   get_all_globals(allg);
 #else
   allg=global_vars;

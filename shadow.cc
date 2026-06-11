@@ -100,7 +100,7 @@ void init_global_vars()
 	  }
       init_ecolab_array( interaction.diag, "interaction(diag)" );
 
-#if MPI
+#if USE_MPI
       distribute_data();
 #endif
       tclvar model_valid("model_valid");
@@ -246,7 +246,7 @@ NEWCMD(mutate,0)
 
   if (sp_cntr==1)
     {
-#ifdef MPI
+#ifdef USE_MPI
 	int sp_cntr_i=max(species);
 	MPI_Allreduce(&sp_cntr_i, &sp_cntr, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 	sp_cntr+=myid+1;
@@ -403,7 +403,7 @@ NEWCMD(mutate,0)
 }
 
 
-#if MPI
+#if USE_MPI
 static global north, east, west, south;
 #endif
 
@@ -415,7 +415,7 @@ global get_neighbour(int cell, int dx, int dy, int torus)
   int nx=coords[0][cell]+dx, ny=coords[1][cell]+dy;
 
   /* do boundary conditions */
-#if MPI
+#if USE_MPI
   if (torus)
     {
       if (nx<minx)
@@ -594,7 +594,7 @@ void embed(int ncells, iarray& species, global* cell0, ...)
 
 
 
-#if MPI
+#if USE_MPI
 /* circular shift the edges around the processors */
 void shift(global &edge, int dest, int src)
 {
@@ -658,7 +658,7 @@ NEWCMD(migrate,0)
   else torus=tcl_torus;
   mig_r=array(ngcells);
 
-#if MPI
+#if USE_MPI
   /* broadcast an array of random numbers to nodes */
   if (myid==0) fillrand(mig_r); 
   double *buf=(double*)mig_r;
@@ -724,7 +724,7 @@ NEWCMD(migrate,0)
 
 #ifndef NDEBUG
   int nmigs=sum(density)-sum(ngvars[density]);
-#if MPI
+#if USE_MPI
   int s;
   MPI_Reduce(&nmigs,&s,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
   if (myid==0)

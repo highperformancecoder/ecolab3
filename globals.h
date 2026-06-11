@@ -140,7 +140,7 @@ int which_cell(int i);
 #endif
 
 
-#if MPI
+#if USE_MPI
 ///Assemble a full set of global variables by combining data on each processor
 void get_all_globals(global&);
 #else
